@@ -5,11 +5,13 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../application_state.dart';
+
 class AppTitleBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLinuxOrWindows = DeviceType.isWindows || DeviceType.isLinux;
-    bool enableTouch = context.select((AppModel m) => m.touchMode);
+    bool enableTouch = context.select((ApplicationState m) => m.touchMode);
     bool useSmallHeader = MediaQuery.of(context).size.width < 600;
     bool hideTitle = MediaQuery.of(context).size.width < 400;
     TextStyle style = useSmallHeader ? TextStyles.h2 : TextStyles.h1;
@@ -35,7 +37,7 @@ class AppTitleBar extends StatelessWidget {
             textDirection: DeviceType.isMacOS ? TextDirection.rtl : TextDirection.ltr,
             children: [
               IconButton(
-                  onPressed: () => context.read<AppModel>().toggleTouchMode(),
+                  onPressed: () => context.read<ApplicationState>().toggleTouchMode(),
                   icon: Icon(enableTouch ? Icons.mouse : Icons.fingerprint)),
               Spacer(),
             ],

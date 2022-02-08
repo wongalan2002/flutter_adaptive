@@ -13,13 +13,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'application_state.dart';
+import 'authentication.dart';
 import 'widgets/app_title_bar.dart';
 import 'global/targeted_actions.dart';
 
 List<Widget> getMainMenuChildren(BuildContext context) {
   // Define a method to change pages in the AppModel
-  void changePage(int value) => context.read<AppModel>().selectedIndex = value;
-  int index = context.select((AppModel m) => m.selectedIndex);
+  void changePage(int value) => context.read<ApplicationState>().selectedIndex = value;
+  int index = context.select((ApplicationState m) => m.selectedIndex);
   return [
     SelectedPageButton(onPressed: () => changePage(0), label: "Adaptive Grid", isSelected: index == 0),
     SelectedPageButton(onPressed: () => changePage(1), label: "Adaptive Data Table", isSelected: index == 1),
@@ -39,8 +41,9 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    var appState = Provider.of<ApplicationState>(context);
     bool useTabs = MediaQuery.of(context).size.width < FormFactor.tablet;
-    bool isLoggedOut = context.select((AppModel m) => m.isLoggedIn) == false;
+    // bool isLoggedOut = context.select((AppModel m) => m.isLoggedIn) == false;
     return TargetedActionScope(
       shortcuts: <LogicalKeySet, Intent>{
         LogicalKeySet(LogicalKeyboardKey.keyA, LogicalKeyboardKey.control): SelectAllIntent(),
@@ -54,38 +57,38 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
             children: [
               AppTitleBar(),
               Expanded(
-                child: isLoggedOut
+                child: appState.loginState == ApplicationLoginState.loggedIn
                     // If logged out, show just the login page with no menus
-                    ? LoginPage()
-                    // Otherwise, show the full application with dynamic scaffold
-                    : Focus(
-                      autofocus: true,
-                      child: Scaffold(
-                          key: _scaffoldKey,
-                          drawer: useTabs ? _SideMenu(showPageButtons: false) : null,
-                          appBar: useTabs ? AppBar(backgroundColor: Colors.blue.shade300) : null,
-                          body: Stack(children: [
-                            // Vertical layout with Tab controller and drawer
-                            if (useTabs) ...[
-                              Column(
-                                children: [
-                                  Expanded(child: _PageStack()),
-                                  _TabMenu(),
-                                ],
-                              )
-                            ]
-                            // Horizontal layout with desktop style side menu
-                            else ...[
-                              Row(
-                                children: [
-                                  _SideMenu(),
-                                  Expanded(child: _PageStack()),
-                                ],
-                              ),
-                            ],
-                          ]),
+                    ? Focus(
+                  autofocus: true,
+                  child: Scaffold(
+                    key: _scaffoldKey,
+                    drawer: useTabs ? _SideMenu(showPageButtons: false) : null,
+                    appBar: useTabs ? AppBar(backgroundColor: Colors.blue.shade300) : null,
+                    body: Stack(children: [
+                      // Vertical layout with Tab controller and drawer
+                      if (useTabs) ...[
+                        Column(
+                          children: [
+                            Expanded(child: _PageStack()),
+                            _TabMenu(),
+                          ],
+                        )
+                      ]
+                      // Horizontal layout with desktop style side menu
+                      else ...[
+                        Row(
+                          children: [
+                            _SideMenu(),
+                            Expanded(child: _PageStack()),
+                          ],
                         ),
-                    ),
+                      ],
+                    ]),
+                  ),
+                )
+                    // Otherwise, show the full application with dynamic scaffold
+                    : LoginPage(),
               ),
             ],
           ),
@@ -98,7 +101,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
 class _PageStack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    int index = context.select((AppModel model) => model.selectedIndex);
+    int index = context.select((ApplicationState model) => model.selectedIndex);
     Widget? page;
     if (index == 0) page = AdaptiveGridPage();
     if (index == 1) page = AdaptiveDataTablePage();
@@ -119,10 +122,10 @@ class _SideMenu extends StatelessWidget {
       String message = "Are you sure you want to logout?";
       bool? doLogout = await showDialog(context: context, builder: (_) => OkCancelDialog(message: message));
       if (doLogout ?? false) {
-        context.read<AppModel>().logout();
+        context.read<ApplicationState>().signOut();
+        // context.read<AppModel>().logout();
       }
     }
-
     return Container(
       color: Colors.white,
       width: 250,
