@@ -1,4 +1,3 @@
-import 'package:adaptive_app_demos/app_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

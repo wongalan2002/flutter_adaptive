@@ -55,7 +55,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
         child: Material(
           child: Column(
             children: [
-              AppTitleBar(),
+              // AppTitleBar(),
               Expanded(
                 child: appState.loginState == ApplicationLoginState.loggedIn
                     // If logged out, show just the login page with no menus

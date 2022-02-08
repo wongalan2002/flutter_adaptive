@@ -1,4 +1,3 @@
-import 'package:adaptive_app_demos/app_model.dart';
 import 'package:adaptive_app_demos/global/device_type.dart';
 import 'package:adaptive_app_demos/global/styling.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
@@ -25,7 +24,7 @@ class AppTitleBar extends StatelessWidget {
           if (hideTitle == false)
             Positioned.fill(
               child: Center(
-                child: Text("Adaptive Scaffold", style: style.copyWith(color: Colors.white)),
+                child: Text("Esay Quote", style: style.copyWith(color: Colors.white)),
               ),
             ),
 

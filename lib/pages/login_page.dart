@@ -1,4 +1,3 @@
-import 'package:adaptive_app_demos/app_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +7,6 @@ import '../application_state.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<ApplicationState>(context);
     Size screenSize = MediaQuery.of(context).size;
     // Reflow from Row to Col when in Portrait mode
     bool useVerticalLayout = screenSize.width < screenSize.height;
@@ -33,14 +31,19 @@ class _LoginDetailPanel extends StatelessWidget {
         alignment: Alignment.center,
         color: Colors.grey.shade300,
         child: Text(
-          "LOGIN VIEW\nBRANDING",
+          "EASY\nQUOTE",
           style: TextStyle(fontSize: 64),
           textAlign: TextAlign.center,
         ),
       );
 }
 
-class _LoginForm extends StatelessWidget {
+class _LoginForm extends StatefulWidget {
+  @override
+  State<_LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<_LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -49,10 +52,9 @@ class _LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     // When login button is pressed, show the Dashboard page.
     // void handleLoginPressed() => context.read<AppModel>().login();
-    void handleLoginPressed(email, password) => context
-        .read<ApplicationState>()
-        .signInWithEmailAndPassword(email, password, (e) {});
-
+    void handleLoginPressed(email, password) =>
+        context.read<ApplicationState>().signInWithEmailAndPassword(email,
+            password, (e) => _showErrorDialog(context, 'Failed to sign in', e));
     // Example Form, pressing the login button will show the Dashboard page
     return Center(
       // Use a maxWidth so the form is responsive, but does get not too large on bigger screens
@@ -68,12 +70,12 @@ class _LoginForm extends StatelessWidget {
                 children: [
                   TextFormField(
                     decoration: const InputDecoration(
-                      hintText: 'Login',
+                      hintText: 'Email',
                     ),
                     controller: _emailController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Enter your name to continue';
+                        return 'Enter your email to continue';
                       }
                       return null;
                     },
@@ -117,7 +119,42 @@ class _LoginForm extends StatelessWidget {
       ),
     );
   }
+
+  void _showErrorDialog(BuildContext context, String title, Exception e) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 24),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  '${(e as dynamic).message}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(color: Colors.deepPurple),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
-InputDecoration _getTextDecoration(String hint) =>
-    InputDecoration(border: OutlineInputBorder(), hintText: hint);
+// InputDecoration _getTextDecoration(String hint) =>
+//     InputDecoration(border: OutlineInputBorder(), hintText: hint);
