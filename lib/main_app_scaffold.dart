@@ -43,7 +43,7 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
   Widget build(BuildContext context) {
     var appState = Provider.of<ApplicationState>(context);
     bool useTabs = MediaQuery.of(context).size.width < FormFactor.tablet;
-    // bool isLoggedOut = context.select((AppModel m) => m.isLoggedIn) == false;
+
     return TargetedActionScope(
       shortcuts: <LogicalKeySet, Intent>{
         LogicalKeySet(LogicalKeyboardKey.keyA, LogicalKeyboardKey.control): SelectAllIntent(),
@@ -97,6 +97,8 @@ class _MainAppScaffoldState extends State<MainAppScaffold> {
     );
   }
 }
+
+
 
 class _PageStack extends StatelessWidget {
   @override

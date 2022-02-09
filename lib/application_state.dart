@@ -28,7 +28,7 @@ class ApplicationState extends ChangeNotifier {
 
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
-        print("FUCKING UID: ${user.uid}");
+        print("UID: ${user.uid}");
         _loginState = ApplicationLoginState.loggedIn;
 
         _guestBookSubscription = FirebaseFirestore.instance
@@ -163,12 +163,51 @@ class ApplicationState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void registerAccount(String email, String displayName, String password,
+  void registerAccount(String email, String password,
+      void Function(FirebaseAuthException e) errorCallback) async {
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) => addNewUser(email));
+    } on FirebaseAuthException catch (e) {
+      errorCallback(e);
+    }
+  }
+
+  void sendVerificationEmail(
+      void Function(FirebaseAuthException e) errorCallback) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser!;
+      await user.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      errorCallback(e);
+    }
+  }
+
+  ////////////////////////////////////////////////////////
+  CollectionReference<Map<String, dynamic>> addNewUser(String email) {
+    var collection = FirebaseFirestore.instance.collection('users');
+    collection
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({
+          'timestamp': DateTime.now().millisecondsSinceEpoch,
+          'email': email,
+          'id': FirebaseAuth.instance.currentUser!.uid
+        })
+        .then((_) => print('Added'))
+        .catchError((error) => print('Add failed: $error'));
+    return (collection);
+  }
+
+  void registerAccountAndDisplayName(
+      String email,
+      String displayName,
+      String password,
       void Function(FirebaseAuthException e) errorCallback) async {
     try {
       var credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      await credential.user!.updateProfile(displayName: displayName);
+      await credential.user!.updateDisplayName(displayName);
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     }
