@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../application_state.dart';
+import '../widgets/show_error.dart';
 
 // Uses full-screen breakpoints to reflow the widget tree
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -47,14 +53,17 @@ class _LoginFormState extends State<_LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final ShowError showError = new ShowError();
 
   @override
   Widget build(BuildContext context) {
     // When login button is pressed, show the Dashboard page.
     // void handleLoginPressed() => context.read<AppModel>().login();
     void handleLoginPressed(email, password) =>
-        context.read<ApplicationState>().signInWithEmailAndPassword(email,
-            password, (e) => _showErrorDialog(context, 'Failed to sign in', e));
+        context.read<ApplicationState>().signInWithEmailAndPassword(
+            email,
+            password,
+            (e) => showError.showErrorDialog(context, "title", e));
     // Example Form, pressing the login button will show the Dashboard page
     return Center(
       // Use a maxWidth so the form is responsive, but does get not too large on bigger screens
@@ -119,42 +128,10 @@ class _LoginFormState extends State<_LoginForm> {
       ),
     );
   }
-
-  void _showErrorDialog(BuildContext context, String title, Exception e) {
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            title,
-            style: const TextStyle(fontSize: 24),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  '${(e as dynamic).message}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(color: Colors.deepPurple),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
+
+
+
 
 // InputDecoration _getTextDecoration(String hint) =>
 //     InputDecoration(border: OutlineInputBorder(), hintText: hint);
