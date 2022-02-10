@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../application_state.dart';
 import '../widgets/show_error.dart';
 import 'forgot_password_page.dart';
+import 'login_detail_panel.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           direction: useVerticalLayout ? Axis.vertical : Axis.horizontal,
           children: [
             if (hideDetailPanel == false) ...[
-              Flexible(child: _LoginDetailPanel()),
+              Flexible(child: LoginDetailPanel()),
             ],
             Flexible(
                 flex: useVerticalLayout ? 2 : 1,
@@ -47,19 +48,6 @@ class _LoginPageState extends State<LoginPage> {
           ]),
     );
   }
-}
-
-class _LoginDetailPanel extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => Container(
-        alignment: Alignment.center,
-        color: Colors.grey.shade300,
-        child: Text(
-          "EASY\nQUOTE",
-          style: TextStyle(fontSize: 64),
-          textAlign: TextAlign.center,
-        ),
-      );
 }
 
 class _LoginForm extends StatefulWidget {
