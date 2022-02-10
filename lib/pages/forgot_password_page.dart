@@ -44,6 +44,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       decoration: const InputDecoration(
                         hintText: 'Email',
                       ),
+                      keyboardType: TextInputType.emailAddress,
                       controller: _emailController,
                       validator: (value) {
                         if (value!.isEmpty) {
