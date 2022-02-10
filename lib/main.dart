@@ -1,4 +1,4 @@
-import 'package:adaptive_app_demos/main_app_scaffold.dart';
+import 'package:adaptive_app_demos/pages/main_app_scaffold.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
