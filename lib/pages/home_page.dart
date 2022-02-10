@@ -67,13 +67,13 @@ class HomePageState extends State<HomePage> {
         child: Material(
           child: Column(
             children: [
-              AppTitleBar(),
+              // AppTitleBar(),
               Expanded(
                 child: Focus(
                   autofocus: true,
                   child: Scaffold(
                     key: _scaffoldKey,
-                    drawer: useTabs ? _SideMenu(showPageButtons: false) : null,
+                    // drawer: useTabs ? _SideMenu(showPageButtons: false) : null,
                     appBar: useTabs
                         ? AppBar(backgroundColor: Colors.blue.shade300)
                         : null,
@@ -147,10 +147,10 @@ class _SideMenu extends StatelessWidget {
           Column(children: [
             SizedBox(height: Insets.extraLarge),
             if (showPageButtons) ...getMainMenuChildren(context),
-            SizedBox(height: Insets.extraLarge),
-            SecondaryMenuButton(label: "Submenu Item 1"),
-            SecondaryMenuButton(label: "Submenu Item 2"),
-            SecondaryMenuButton(label: "Submenu Item 3"),
+            // SizedBox(height: Insets.extraLarge),
+            // SecondaryMenuButton(label: "Submenu Item 1"),
+            // SecondaryMenuButton(label: "Submenu Item 2"),
+            // SecondaryMenuButton(label: "Submenu Item 3"),
             Spacer(),
             OutlinedButton(
                 child: Text("Logout"), onPressed: _handleLogoutPressed),
