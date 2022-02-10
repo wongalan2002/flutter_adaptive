@@ -17,15 +17,6 @@ class ApplicationState extends ChangeNotifier {
 
   Future<void> init() async {
     await Firebase.initializeApp();
-    FirebaseFirestore.instance
-        .collection('attendees')
-        .where('attending', isEqualTo: true)
-        .snapshots()
-        .listen((snapshot) {
-      _attendees = snapshot.docs.length;
-      notifyListeners();
-    });
-
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         print("UID: ${user.uid}");
@@ -72,6 +63,70 @@ class ApplicationState extends ChangeNotifier {
       }
       notifyListeners();
     });
+    // if (FirebaseAuth.instance.currentUser!.emailVerified){
+    //
+    // }else{
+    //   _loginState = ApplicationLoginState.verifyEmail;
+    //   final user = FirebaseAuth.instance.currentUser!;
+    //   await user.sendEmailVerification();
+    //   print("Verify Email");
+    // }
+
+    // FirebaseFirestore.instance
+    //     .collection('attendees')
+    //     .where('attending', isEqualTo: true)
+    //     .snapshots()
+    //     .listen((snapshot) {
+    //   _attendees = snapshot.docs.length;
+    //   notifyListeners();
+    // });
+
+    // FirebaseAuth.instance.userChanges().listen((user) {
+    //   if (user != null) {
+    //     print("UID: ${user.uid}");
+    //     _loginState = ApplicationLoginState.loggedIn;
+    //
+    //     _guestBookSubscription = FirebaseFirestore.instance
+    //         .collection('guestbook')
+    //         .orderBy('timestamp', descending: true)
+    //         .snapshots()
+    //         .listen((snapshot) {
+    //       _guestBookMessages = [];
+    //       snapshot.docs.forEach((document) {
+    //         _guestBookMessages.add(
+    //           GuestBookMessage(
+    //             name: document.data()['name'] as String,
+    //             message: document.data()['text'] as String,
+    //           ),
+    //         );
+    //       });
+    //       notifyListeners();
+    //     });
+    //
+    //     // _attendingSubscription = FirebaseFirestore.instance
+    //     //     .collection('attendees')
+    //     //     .doc(user.uid)
+    //     //     .snapshots()
+    //     //     .listen((snapshot) {
+    //     //   if (snapshot.data() != null) {
+    //     //     if (snapshot.data()!['attending'] as bool) {
+    //     //       _attending = Attending.yes;
+    //     //     } else {
+    //     //       _attending = Attending.no;
+    //     //     }
+    //     //   } else {
+    //     //     _attending = Attending.unknown;
+    //     //   }
+    //     //   notifyListeners();
+    //     // });
+    //   } else {
+    //     _loginState = ApplicationLoginState.loggedOut;
+    //     _guestBookMessages = [];
+    //     _guestBookSubscription?.cancel();
+    //     _attendingSubscription?.cancel();
+    //   }
+    //   notifyListeners();
+    // });
   }
 
   StreamSubscription<QuerySnapshot>? _guestBookSubscription;
@@ -169,6 +224,7 @@ class ApplicationState extends ChangeNotifier {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => addNewUser(email));
+      _loginState = ApplicationLoginState.verifyEmail;
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     }
@@ -211,6 +267,10 @@ class ApplicationState extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     }
+  }
+
+  bool isEmailVerified() {
+    return FirebaseAuth.instance.currentUser!.emailVerified;
   }
 
   void signOut() {

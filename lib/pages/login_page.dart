@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../application_state.dart';
 import '../widgets/show_error.dart';
+import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -77,8 +78,10 @@ class _LoginFormState extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     void handleLoginPressed(email, password) =>
-        context.read<ApplicationState>().signInWithEmailAndPassword(email,
-            password, (e) => showError.showErrorDialog(context, "title", e));
+        context.read<ApplicationState>().signInWithEmailAndPassword(
+            email,
+            password,
+            (e) => showError.showErrorDialog(context, "Cannot Login", e));
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 450),
@@ -130,7 +133,7 @@ class _LoginFormState extends State<_LoginForm> {
                         width: double.infinity,
                         alignment: Alignment.center,
                         padding: EdgeInsets.all(16.0),
-                        child: Text("Log In"),
+                        child: Text("LOGIN"),
                       )),
                   SizedBox(height: 50),
                   RichText(
@@ -151,6 +154,22 @@ class _LoginFormState extends State<_LoginForm> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  GestureDetector(
+                    child: Text(
+                      "Forget Password?",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ForgotPasswordPage()));
+                    },
+                  )
                 ],
               ),
             ),
@@ -181,7 +200,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   Widget build(BuildContext context) {
     void handleRegisterPressed(email, password) =>
         context.read<ApplicationState>().registerAccount(email, password,
-            (e) => showError.showErrorDialog(context, "title", e));
+            (e) => showError.showErrorDialog(context, "Cannot Register", e));
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 450),
@@ -250,7 +269,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                         width: double.infinity,
                         alignment: Alignment.center,
                         padding: EdgeInsets.all(16.0),
-                        child: Text("REGISTER"),
+                        child: Text("SIGN UP"),
                       )),
                   SizedBox(height: 50),
                   RichText(

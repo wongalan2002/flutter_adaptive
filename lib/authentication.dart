@@ -6,6 +6,7 @@ enum ApplicationLoginState {
   register,
   password,
   loggedIn,
+  verifyEmail,
 }
 
 // class Authentication extends StatelessWidget {
