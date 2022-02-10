@@ -174,29 +174,29 @@ class ApplicationState extends ChangeNotifier {
   void toggleTouchMode() => touchMode = !touchMode;
 /////////////////////////////////////////////////////
 
-  void startLoginFlow() {
-    _loginState = ApplicationLoginState.emailAddress;
-    notifyListeners();
-  }
+  // void startLoginFlow() {
+  //   _loginState = ApplicationLoginState.emailAddress;
+  //   notifyListeners();
+  // }
 
-  void verifyEmail(
-    String email,
-    void Function(FirebaseAuthException e) errorCallback,
-  ) async {
-    try {
-      var methods =
-          await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
-      if (methods.contains('password')) {
-        _loginState = ApplicationLoginState.password;
-      } else {
-        _loginState = ApplicationLoginState.register;
-      }
-      _email = email;
-      notifyListeners();
-    } on FirebaseAuthException catch (e) {
-      errorCallback(e);
-    }
-  }
+  // void verifyEmail(
+  //   String email,
+  //   void Function(FirebaseAuthException e) errorCallback,
+  // ) async {
+  //   try {
+  //     var methods =
+  //         await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+  //     if (methods.contains('password')) {
+  //       _loginState = ApplicationLoginState.password;
+  //     } else {
+  //       _loginState = ApplicationLoginState.register;
+  //     }
+  //     _email = email;
+  //     notifyListeners();
+  //   } on FirebaseAuthException catch (e) {
+  //     errorCallback(e);
+  //   }
+  // }
 
   void signInWithEmailAndPassword(
     String email,
@@ -213,17 +213,19 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
-  void cancelRegistration() {
-    _loginState = ApplicationLoginState.emailAddress;
-    notifyListeners();
-  }
+  // void cancelRegistration() {
+  //   _loginState = ApplicationLoginState.emailAddress;
+  //   notifyListeners();
+  // }
 
   void registerAccount(String email, String password,
       void Function(FirebaseAuthException e) errorCallback) async {
     try {
       await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => addNewUser(email));
+          .createUserWithEmailAndPassword(email: email, password: password);
+      // await FirebaseAuth.instance
+      //     .createUserWithEmailAndPassword(email: email, password: password)
+      //     .then((value) => addNewUser(email));
       _loginState = ApplicationLoginState.verifyEmail;
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
@@ -272,6 +274,7 @@ class ApplicationState extends ChangeNotifier {
   bool isEmailVerified() {
     return FirebaseAuth.instance.currentUser!.emailVerified;
   }
+
 
   void signOut() {
     FirebaseAuth.instance.signOut();
