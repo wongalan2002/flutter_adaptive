@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'models/guestbook_message.dart';
 // import 'View/yes_no_session.dart';
 import 'authentication.dart';
+import 'models/user_profile.dart';
 
 ///////////////////////////////////////////////////////////
 class ApplicationState extends ChangeNotifier {
@@ -39,6 +40,16 @@ class ApplicationState extends ChangeNotifier {
           notifyListeners();
         });
 
+        _userProfileSubscription = FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .snapshots()
+            .listen((snapshot) {
+          if (snapshot.data() != null) {
+            _userProfile = UserProfile.fromMap(snapshot.data()!);
+          }
+          notifyListeners();
+        });
         // _attendingSubscription = FirebaseFirestore.instance
         //     .collection('attendees')
         //     .doc(user.uid)
@@ -56,10 +67,13 @@ class ApplicationState extends ChangeNotifier {
         //   notifyListeners();
         // });
       } else {
+        _userProfile = UserProfile();
+
         _loginState = ApplicationLoginState.loggedOut;
         _guestBookMessages = [];
         _guestBookSubscription?.cancel();
         _attendingSubscription?.cancel();
+        _userProfileSubscription?.cancel();
       }
       notifyListeners();
     });
@@ -129,6 +143,8 @@ class ApplicationState extends ChangeNotifier {
     // });
   }
 
+
+  StreamSubscription<DocumentSnapshot>? _userProfileSubscription;
   StreamSubscription<QuerySnapshot>? _guestBookSubscription;
   StreamSubscription<DocumentSnapshot>? _attendingSubscription;
 
@@ -144,6 +160,8 @@ class ApplicationState extends ChangeNotifier {
   int _attendees = 0;
   int get attendees => _attendees;
 
+  UserProfile _userProfile = UserProfile();
+  UserProfile get userProfile => _userProfile;
   // Attending _attending = Attending.unknown;
   // Attending get attending => _attending;
 

@@ -23,3 +23,39 @@ const activeBackgroundColor = Color(0xFF9C6DFF);
 const buttonColor = Colors.black;
 const mainSessionButton = Color(0xFFC4C4C4);
 const defaultPadding = 16.0;
+const keyColor = Color(0XFF6732FF);
+const CCC = Color(0XFFCCCCCC);
+
+InputDecoration formInputDecoration = InputDecoration(
+  filled: true,
+  helperText: '',
+  fillColor: Colors.white,
+  contentPadding: const EdgeInsets.all(8.0),
+  focusedBorder: OutlineInputBorder(
+    borderSide: const BorderSide(color: activeBackgroundColor),
+    borderRadius: BorderRadius.circular(8.0),
+  ),
+  enabledBorder: UnderlineInputBorder(
+    borderSide: const BorderSide(color: Colors.white),
+    borderRadius: BorderRadius.circular(8.0),
+  ),
+  disabledBorder: OutlineInputBorder(
+    borderSide: const BorderSide(color: Colors.white),
+    borderRadius: BorderRadius.circular(8.0),
+  ),
+  border: OutlineInputBorder(
+    borderSide: const BorderSide(color: activeBackgroundColor),
+    borderRadius: BorderRadius.circular(8.0),
+  ),
+  errorBorder: OutlineInputBorder(
+    borderSide: const BorderSide(color: redColor),
+    borderRadius: BorderRadius.circular(8.0),
+  ),
+  focusedErrorBorder: OutlineInputBorder(
+    borderSide: const BorderSide(color: redColor),
+    borderRadius: BorderRadius.circular(8.0),
+  ),
+  hintStyle: const TextStyle(
+    color: Color(0xAD9A9A9A),
+  ),
+);

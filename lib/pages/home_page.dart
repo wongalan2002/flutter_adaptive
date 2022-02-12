@@ -15,31 +15,6 @@ import 'adaptive_grid_page.dart';
 import 'adaptive_reflow_page.dart';
 import 'focus_examples_page.dart';
 
-List<Widget> getMainMenuChildren(BuildContext context) {
-  // Define a method to change pages in the AppModel
-  void changePage(int value) =>
-      context.read<ApplicationState>().selectedIndex = value;
-  int index = context.select((ApplicationState m) => m.selectedIndex);
-  return [
-    SelectedPageButton(
-        onPressed: () => changePage(0),
-        label: "Adaptive Grid",
-        isSelected: index == 0),
-    SelectedPageButton(
-        onPressed: () => changePage(1),
-        label: "Adaptive Data Table",
-        isSelected: index == 1),
-    SelectedPageButton(
-        onPressed: () => changePage(2),
-        label: "Adaptive Reflow",
-        isSelected: index == 2),
-    SelectedPageButton(
-        onPressed: () => changePage(3),
-        label: "Focus Examples",
-        isSelected: index == 3),
-  ];
-}
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -57,9 +32,9 @@ class HomePageState extends State<HomePage> {
     return TargetedActionScope(
       shortcuts: <LogicalKeySet, Intent>{
         LogicalKeySet(LogicalKeyboardKey.keyA, LogicalKeyboardKey.control):
-        SelectAllIntent(),
+            SelectAllIntent(),
         LogicalKeySet(LogicalKeyboardKey.keyS, LogicalKeyboardKey.control):
-        SelectNoneIntent(),
+            SelectNoneIntent(),
         LogicalKeySet(LogicalKeyboardKey.delete): DeleteIntent(),
       },
       child: WindowBorder(
@@ -116,7 +91,7 @@ class _PageStack extends StatelessWidget {
     if (index == 0) page = AdaptiveGridPage();
     if (index == 1) page = AdaptiveDataTablePage();
     if (index == 2) page = AdaptiveReflowPage();
-    if (index == 3) page = FocusExamplesPage();
+    // if (index == 3) page = FocusExamplesPage();
     return FocusTraversalGroup(child: page ?? Container());
   }
 }
@@ -167,6 +142,37 @@ class _SideMenu extends StatelessWidget {
   }
 }
 
+List<Widget> getMainMenuChildren(BuildContext context) {
+  // Define a method to change pages in the AppModel
+  void changePage(int value) =>
+      context.read<ApplicationState>().selectedIndex = value;
+  int index = context.select((ApplicationState m) => m.selectedIndex);
+  return [
+    SelectedPageButton(
+      onPressed: () => changePage(0),
+      label: "Home",
+      isSelected: index == 0,
+      iconPath: "assets/icons/Home.svg",
+    ),
+    SelectedPageButton(
+      onPressed: () => changePage(1),
+      label: "Quotation",
+      isSelected: index == 1,
+      iconPath: "assets/icons/List.svg",
+    ),
+    SelectedPageButton(
+      onPressed: () => changePage(2),
+      label: "Setting",
+      isSelected: index == 2,
+      iconPath: "assets/icons/Setting.svg",
+    ),
+    // SelectedPageButton(
+    //     onPressed: () => changePage(3),
+    //     label: "Focus Examples",
+    //     isSelected: index == 3),
+  ];
+}
+
 class _TabMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -177,7 +183,7 @@ class _TabMenu extends StatelessWidget {
     return Column(
       children: [
         // Top Divider
-        Container(width: double.infinity, height: 1, color: Colors.blue),
+        // Container(width: double.infinity, height: 1, color: Colors.blue),
         // Tab buttons
         Row(children: tabButtons),
       ],

@@ -1,8 +1,12 @@
 import 'package:adaptive_app_demos/global/styling.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../global/device_size.dart';
 
 class StyledTextButton extends StatelessWidget {
-  const StyledTextButton({Key? key, required this.onPressed, required this.child}) : super(key: key);
+  const StyledTextButton(
+      {Key? key, required this.onPressed, required this.child})
+      : super(key: key);
   final VoidCallback onPressed;
   final Widget child;
 
@@ -35,24 +39,60 @@ class SecondaryMenuButton extends StatelessWidget {
 }
 
 class SelectedPageButton extends StatelessWidget {
-  const SelectedPageButton({Key? key, required this.onPressed, required this.label, required this.isSelected})
-      : super(key: key);
+  const SelectedPageButton({
+    Key? key,
+    required this.onPressed,
+    required this.label,
+    required this.isSelected,
+    required this.iconPath,
+  }) : super(key: key);
   final VoidCallback? onPressed;
   final String label;
   final bool isSelected;
+  final String iconPath;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: isSelected ? Colors.grey.shade200 : null,
-      child: TextButton(
-        onPressed: onPressed,
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(Insets.large),
-          child: Text(label, style: TextStyles.buttonText1, maxLines: 1),
-        ),
-      ),
-    );
+    bool useTabs = MediaQuery.of(context).size.width < FormFactor.tablet;
+    return useTabs
+        ? Container(
+            // color: isSelected ? Colors.grey.shade200 : null,
+            child: Column(
+              children: [
+                InkWell(
+                  child: Container(
+                    width: double.infinity,
+                    height: 82,
+                    padding: EdgeInsets.all(Insets.large),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SvgPicture.asset(
+                        iconPath,
+                        color: isSelected ? keyColor : CCC,
+                      ),
+                    ),
+                  ),
+                  onTap: onPressed,
+                )
+              ],
+            ),
+          )
+        : Container(
+            color: isSelected ? Colors.grey.shade200 : null,
+            child: Column(
+              children: [
+                TextButton(
+                  onPressed: onPressed,
+                  child: Container(
+                    width: double.infinity,
+                    height: 40,
+                    padding: EdgeInsets.all(Insets.large),
+                    child:
+                        Text(label, style: TextStyles.buttonText1, maxLines: 1),
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 }
