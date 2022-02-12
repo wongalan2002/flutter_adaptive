@@ -48,7 +48,7 @@ class HomePageState extends State<HomePage> {
                   autofocus: true,
                   child: Scaffold(
                     key: _scaffoldKey,
-                    // drawer: useTabs ? _SideMenu(showPageButtons: false) : null,
+                    drawer: useTabs ? _SideMenu(showPageButtons: false) : null,
                     appBar: useTabs
                         ? AppBar(backgroundColor: Colors.blue.shade300)
                         : null,
