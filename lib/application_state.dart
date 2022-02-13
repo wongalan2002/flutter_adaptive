@@ -8,10 +8,76 @@ import 'package:flutter/cupertino.dart';
 import 'models/guestbook_message.dart';
 // import 'View/yes_no_session.dart';
 import 'authentication.dart';
+import 'models/quotation_order.dart';
 import 'models/user_profile.dart';
 
 ///////////////////////////////////////////////////////////
 class ApplicationState extends ChangeNotifier {
+
+  StreamSubscription<QuerySnapshot>? _quotationOrdersSubscription;
+  StreamSubscription<DocumentSnapshot>? _userProfileSubscription;
+  StreamSubscription<QuerySnapshot>? _guestBookSubscription;
+  StreamSubscription<DocumentSnapshot>? _attendingSubscription;
+
+  ApplicationLoginState _loginState = ApplicationLoginState.loggedOut;
+  ApplicationLoginState get loginState => _loginState;
+
+  String? _email;
+  String? get email => _email;
+
+  List<GuestBookMessage> _guestBookMessages = [];
+  List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
+
+  List<QuotationOrder> _quotationOrders = [];
+  List<QuotationOrder> get quotationOrders => _quotationOrders;
+
+  int _attendees = 0;
+  int get attendees => _attendees;
+
+  UserProfile _userProfile = UserProfile();
+  UserProfile get userProfile => _userProfile;
+
+  set userProfile(UserProfile userProfile) {
+    final userDoc = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    // userDoc.set(<String, dynamic>{
+    //   'name': userProfile.name,
+    //   'email': userProfile.email,
+    //   'schoolName': userProfile.schoolName,
+    //   'post': userProfile.post,
+    //   'phone': userProfile.phone
+    // });
+    userDoc.set(userProfile.toJson());
+  }
+
+  // Attending _attending = Attending.unknown;
+  // Attending get attending => _attending;
+
+  // set attending(Attending attending) {
+  //   final userDoc = FirebaseFirestore.instance
+  //       .collection('attendees')
+  //       .doc(FirebaseAuth.instance.currentUser!.uid);
+  //   if (attending == Attending.yes) {
+  //     userDoc.set(<String, dynamic>{'attending': true});
+  //   } else {
+  //     userDoc.set(<String, dynamic>{'attending': false});
+  //   }
+  // }
+
+/////////////////////////////////////////////////////
+  bool getDefaultTouchMode() => DeviceType.isMobile == true;
+
+  // Main menu, selected page
+  int _selectedIndex = 0;
+  int get selectedIndex => _selectedIndex;
+  set selectedIndex(int value) => notify(() => _selectedIndex = value);
+
+  // Touch mode, determines density of views
+  late bool _touchMode = getDefaultTouchMode();
+  bool get touchMode => _touchMode;
+  set touchMode(bool value) => notify(() => _touchMode = value);
+
   ApplicationState() {
     init();
   }
@@ -37,6 +103,19 @@ class ApplicationState extends ChangeNotifier {
               ),
             );
           });
+          notifyListeners();
+        });
+
+        _quotationOrdersSubscription = FirebaseFirestore.instance
+            .collection('quotations')
+            .orderBy('submissionDate', descending: true)
+            .where('userId', isEqualTo: user.uid)
+            .snapshots()
+            .listen((snapshot) {
+          _quotationOrders = [];
+          for (var document in snapshot.docs) {
+            _quotationOrders.add(QuotationOrder.fromMap(document.data()));
+          }
           notifyListeners();
         });
 
@@ -68,12 +147,14 @@ class ApplicationState extends ChangeNotifier {
         // });
       } else {
         _userProfile = UserProfile();
-
-        _loginState = ApplicationLoginState.loggedOut;
+        _quotationOrders = [];
         _guestBookMessages = [];
+        _loginState = ApplicationLoginState.loggedOut;
+
         _guestBookSubscription?.cancel();
         _attendingSubscription?.cancel();
         _userProfileSubscription?.cancel();
+        _quotationOrdersSubscription?.cancel();
       }
       notifyListeners();
     });
@@ -143,51 +224,6 @@ class ApplicationState extends ChangeNotifier {
     // });
   }
 
-
-  StreamSubscription<DocumentSnapshot>? _userProfileSubscription;
-  StreamSubscription<QuerySnapshot>? _guestBookSubscription;
-  StreamSubscription<DocumentSnapshot>? _attendingSubscription;
-
-  ApplicationLoginState _loginState = ApplicationLoginState.loggedOut;
-  ApplicationLoginState get loginState => _loginState;
-
-  String? _email;
-  String? get email => _email;
-
-  List<GuestBookMessage> _guestBookMessages = [];
-  List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
-
-  int _attendees = 0;
-  int get attendees => _attendees;
-
-  UserProfile _userProfile = UserProfile();
-  UserProfile get userProfile => _userProfile;
-  // Attending _attending = Attending.unknown;
-  // Attending get attending => _attending;
-
-  // set attending(Attending attending) {
-  //   final userDoc = FirebaseFirestore.instance
-  //       .collection('attendees')
-  //       .doc(FirebaseAuth.instance.currentUser!.uid);
-  //   if (attending == Attending.yes) {
-  //     userDoc.set(<String, dynamic>{'attending': true});
-  //   } else {
-  //     userDoc.set(<String, dynamic>{'attending': false});
-  //   }
-  // }
-
-/////////////////////////////////////////////////////
-  bool getDefaultTouchMode() => DeviceType.isMobile == true;
-
-  // Main menu, selected page
-  int _selectedIndex = 0;
-  int get selectedIndex => _selectedIndex;
-  set selectedIndex(int value) => notify(() => _selectedIndex = value);
-
-  // Touch mode, determines density of views
-  late bool _touchMode = getDefaultTouchMode();
-  bool get touchMode => _touchMode;
-  set touchMode(bool value) => notify(() => _touchMode = value);
 
   void toggleTouchMode() => touchMode = !touchMode;
 /////////////////////////////////////////////////////
@@ -325,4 +361,17 @@ class ApplicationState extends ChangeNotifier {
     _touchMode = getDefaultTouchMode();
   }
 /////////////////////////////////////////////////////
+
+  Future<DocumentReference> addQuotationOrder(quotationItems) {
+    if (_loginState != ApplicationLoginState.loggedIn) {
+      throw Exception('Must be logged in');
+    }
+    return FirebaseFirestore.instance
+        .collection('quotations')
+        .add(quotationItems);
+  }
+
+  Stream<QuerySnapshot> streamImage() {
+    return FirebaseFirestore.instance.collection('imageURLs').snapshots();
+  }
 }

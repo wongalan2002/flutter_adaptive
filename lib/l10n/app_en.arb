@@ -14,7 +14,7 @@
   "quoteOrderPurpose": "Quotation for",
   "quoteOrderPurposeHint": "Department/Subject/Events",
   "quoteOrderPurposeV": "Please input your department/subject/events",
-  "quotaOrderItemText": "Item",
+  "quotaOrderItemText": "Quotation Item",
   "quotaOrderEmpty": "Empty in quotation order",
   "quotaItemTitleEdit":"Edit Item",
   "quotaItemTitleNew":"New Item",

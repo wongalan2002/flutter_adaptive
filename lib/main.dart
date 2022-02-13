@@ -18,7 +18,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ApplicationState(),
-      builder: (context, _) => AppScaffold(),
+      builder: (context, _) => App(),
     ),
   );
 
@@ -29,16 +29,16 @@ void main() async {
   });
 }
 
-class AppScaffold extends StatefulWidget {
+class App extends StatefulWidget {
   static void setLocale(BuildContext context, Locale newLocale) async {
-    _AppScaffoldState? state = context.findAncestorStateOfType<_AppScaffoldState>();
+    _AppState? state = context.findAncestorStateOfType<_AppState>();
     state?.changeLanguage(newLocale);
   }
   @override
-  State<AppScaffold> createState() => _AppScaffoldState();
+  State<App> createState() => _AppState();
 }
 
-class _AppScaffoldState extends State<AppScaffold> {
+class _AppState extends State<App> {
   late Locale _locale = const Locale('zh', '');
 
   changeLanguage(Locale locale) {

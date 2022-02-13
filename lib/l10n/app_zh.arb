@@ -14,7 +14,7 @@
   "quoteOrderPurpose": "報價目的",
   "quoteOrderPurposeHint": "小組/科目/活動",
   "quoteOrderPurposeV": "請輸入小組/科目/活動等資料",
-  "quotaOrderItemText": "項目",
+  "quotaOrderItemText": "報價項目",
   "quotaOrderEmpty": "未有報價頂目",
   "quotaItemTitleEdit":"編輯項目",
   "quotaItemTitleNew":"新增項目",

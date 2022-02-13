@@ -1,3 +1,5 @@
+import 'package:adaptive_app_demos/pages/quotation_order_list_page.dart';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,8 @@ import '../widgets/ok_cancel_dialog.dart';
 import 'adaptive_data_table_page.dart';
 import 'adaptive_grid_page.dart';
 import 'adaptive_reflow_page.dart';
+import 'quotations_list_page.dart';
+import 'start_page.dart';
 import 'focus_examples_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -48,10 +52,10 @@ class HomePageState extends State<HomePage> {
                   autofocus: true,
                   child: Scaffold(
                     key: _scaffoldKey,
-                    drawer: useTabs ? _SideMenu(showPageButtons: false) : null,
-                    appBar: useTabs
-                        ? AppBar(backgroundColor: Colors.blue.shade300)
-                        : null,
+                    // drawer: useTabs ? _SideMenu(showPageButtons: false) : null,
+                    // appBar: useTabs
+                    //     ? AppBar(backgroundColor: Colors.blue.shade300)
+                    //     : null,
                     body: Stack(children: [
                       // Vertical layout with Tab controller and drawer
                       if (useTabs) ...[
@@ -88,8 +92,10 @@ class _PageStack extends StatelessWidget {
   Widget build(BuildContext context) {
     int index = context.select((ApplicationState model) => model.selectedIndex);
     Widget? page;
-    if (index == 0) page = AdaptiveGridPage();
-    if (index == 1) page = AdaptiveDataTablePage();
+    // if (index == 0) page = AdaptiveGridPage();
+    if (index == 0) page = StartPage();
+    // if (index == 1) page = AdaptiveDataTablePage();
+    if (index == 1) page = QuotationsListPage();
     if (index == 2) page = AdaptiveReflowPage();
     // if (index == 3) page = FocusExamplesPage();
     return FocusTraversalGroup(child: page ?? Container());
@@ -98,7 +104,6 @@ class _PageStack extends StatelessWidget {
 
 class _SideMenu extends StatelessWidget {
   const _SideMenu({Key? key, this.showPageButtons = true}) : super(key: key);
-
   final bool showPageButtons;
 
   @override
@@ -114,7 +119,7 @@ class _SideMenu extends StatelessWidget {
     }
 
     return Container(
-      color: Colors.white,
+      color: backgroundColor,
       width: 250,
       child: Stack(
         children: [
@@ -135,7 +140,7 @@ class _SideMenu extends StatelessWidget {
           Align(
               alignment: Alignment.centerRight,
               child: Container(
-                  width: 1, height: double.infinity, color: Colors.blue)),
+                  width: 1, height: double.infinity, color:dimGrey)),
         ],
       ),
     );
@@ -180,13 +185,25 @@ class _TabMenu extends StatelessWidget {
     List<Expanded> tabButtons = getMainMenuChildren(context)
         .map((btn) => Expanded(child: btn))
         .toList();
-    return Column(
-      children: [
-        // Top Divider
-        // Container(width: double.infinity, height: 1, color: Colors.blue),
-        // Tab buttons
-        Row(children: tabButtons),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 10,
+            blurRadius: 10,
+            offset: Offset(0, 0), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Top Divider
+          // Container(width: double.infinity, height: 1, color: Colors.blue),
+          // Tab buttons
+          Row(children: tabButtons),
+        ],
+      ),
     );
   }
 }

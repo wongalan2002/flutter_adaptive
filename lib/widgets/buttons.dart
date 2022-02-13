@@ -56,7 +56,7 @@ class SelectedPageButton extends StatelessWidget {
     bool useTabs = MediaQuery.of(context).size.width < FormFactor.tablet;
     return useTabs
         ? Container(
-            // color: isSelected ? Colors.grey.shade200 : null,
+            color: Colors.white,
             child: Column(
               children: [
                 InkWell(
@@ -81,15 +81,28 @@ class SelectedPageButton extends StatelessWidget {
             color: isSelected ? Colors.grey.shade200 : null,
             child: Column(
               children: [
-                TextButton(
-                  onPressed: onPressed,
-                  child: Container(
-                    width: double.infinity,
-                    height: 40,
-                    padding: EdgeInsets.all(Insets.large),
-                    child:
-                        Text(label, style: TextStyles.buttonText1, maxLines: 1),
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.all(12.0),
+                    //   child: SvgPicture.asset(
+                    //     iconPath,
+                    //   ),
+                    // ),
+                    Expanded(
+                      child: TextButton(
+                        onPressed: onPressed,
+                        child: Container(
+                          width: double.infinity,
+                          height: 40,
+                          padding: EdgeInsets.all(Insets.large),
+                          child: Text(label,
+                              style: TextStyles.buttonText1, maxLines: 1),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
