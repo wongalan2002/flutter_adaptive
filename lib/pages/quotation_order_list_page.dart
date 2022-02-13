@@ -129,7 +129,8 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                             child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(0, 100, 0, 40),
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 100, 0, 40),
                                 child: SizedBox(
                                     height: 247,
                                     child: DecoratedBox(
@@ -139,8 +140,7 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                                                 "assets/icons/box.png"),
                                             fit: BoxFit.fitHeight),
                                       ),
-                                      child:
-                                          Center(child: null),
+                                      child: Center(child: null),
                                     )),
                               ),
                               Text(localizations.quotaOrderEmpty,
@@ -220,22 +220,40 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: activeBackgroundColor,
-        child: const Icon(Icons.add),
-        onPressed: () {
-          setState(() {
-            Navigator.of(context).push(MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return QuotationEditPage(
-                    callback: addQuotationItem,
-                    isEdit: false,
-                  );
-                },
-                fullscreenDialog: true));
-          });
-        },
+      floatingActionButton: Container(
+        width: MediaQuery.of(context).size.width * 0.50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: FloatingActionButton.extended(
+          backgroundColor: keyColor,
+          onPressed: () {},
+          elevation: 0,
+          icon: Icon(Icons.add),
+          label: Text(
+            localizations.quotaItemTitleNew,
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: keyColor,
+      //   child: const Icon(Icons.add),
+      //   onPressed: () {
+      //     setState(() {
+      //       Navigator.of(context).push(MaterialPageRoute<void>(
+      //           builder: (BuildContext context) {
+      //             return QuotationEditPage(
+      //               callback: addQuotationItem,
+      //               isEdit: false,
+      //             );
+      //           },
+      //           fullscreenDialog: true));
+      //     });
+      //   },
+      // ),
     );
   }
 }

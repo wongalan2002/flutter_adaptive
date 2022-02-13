@@ -23,18 +23,18 @@ class StartPage extends StatelessWidget {
           ),
           actions: <Widget>[
             InkWell(
-              child : Container(
-                padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+              child: Container(
+                  padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
                   child: GestureDetector(
                     child: SvgPicture.asset(
                       "assets/icons/add.svg",
                     ),
-                  )
-              ),
-              onTap: (){
+                  )),
+              onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const QuotationOrderListPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const QuotationOrderListPage()),
                 );
               },
             ),

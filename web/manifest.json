@@ -1,6 +1,6 @@
 {
-    "name": "adaptive_app_demos",
-    "short_name": "adaptive_app_demos",
+    "name": "easyquote",
+    "short_name": "easyquote",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,4 @@
-package com.example.adaptive_app_demos
+package com.gadgetoflife.easyquote
 
 import io.flutter.embedding.android.FlutterActivity
 

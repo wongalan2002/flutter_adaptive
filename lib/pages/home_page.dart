@@ -1,4 +1,5 @@
 import 'package:adaptive_app_demos/pages/quotation_order_list_page.dart';
+import 'package:adaptive_app_demos/pages/setting_page.dart';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,8 @@ class _PageStack extends StatelessWidget {
     if (index == 0) page = StartPage();
     // if (index == 1) page = AdaptiveDataTablePage();
     if (index == 1) page = QuotationsListPage();
-    if (index == 2) page = AdaptiveReflowPage();
+    if (index == 2) page = SettingPage();
+    // if (index == 2) page = AdaptiveReflowPage();
     // if (index == 3) page = FocusExamplesPage();
     return FocusTraversalGroup(child: page ?? Container());
   }
