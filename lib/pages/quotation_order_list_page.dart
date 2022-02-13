@@ -1,3 +1,6 @@
+import 'package:provider/provider.dart';
+
+import '../application_state.dart';
 import '../global/device_size.dart';
 import 'quotation_order_comfirm_page.dart';
 import 'quotation_edit_page.dart';
@@ -78,6 +81,37 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
         automaticallyImplyLeading: true,
         centerTitle: true,
         elevation: 0,
+        actions: [
+          Visibility(
+            visible: _quotationOrder.quotationItems!.isNotEmpty,
+            child: Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      _quotationOrder.quotationRequester =
+                          quotationRequesterTextController.text;
+                      _quotationOrder.submissionDate = DateTime.now();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuotationOrderConfirmPage(
+                            quotationOrder: _quotationOrder,
+                            history: false,
+                          ),
+                        ),
+                      );
+                      // print(
+                      //     'Button NEXT ... ${_quotationOrder.toJson()}');
+                    }
+                  },
+                  child: Icon(
+                    Icons.send,
+                    size: 26.0,
+                  ),
+                )),
+          ),
+        ],
         // title: Text(
         //   localizations.quoteOrderTitle,
         //   style: EasyQuoteTextStyles.h5,
@@ -168,54 +202,59 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                             ),
                           ),
                   ),
-                  Visibility(
-                    visible: _quotationOrder.quotationItems!.isNotEmpty,
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(80, 5, 80, 16),
-                      child: ElevatedButton(
-                        child: const SizedBox(
-                          height: 56,
-                          width: double.infinity,
-                          child: Center(
-                            child: Text(
-                              'Next',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          primary: buttonColor,
-                          elevation: 0,
-                          shadowColor: Colors.transparent,
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _quotationOrder.quotationRequester =
-                                quotationRequesterTextController.text;
-                            _quotationOrder.submissionDate = DateTime.now();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => QuotationOrderConfirmPage(
-                                  quotationOrder: _quotationOrder,
-                                  history: false,
-                                ),
-                              ),
-                            );
-                            // print(
-                            //     'Button NEXT ... ${_quotationOrder.toJson()}');
-                          }
-                          // Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  ),
+
+                  //////////////////////////////////
+                  //////////////////////////////////
+                  // Visibility(
+                  //   visible: _quotationOrder.quotationItems!.isNotEmpty,
+                  //   child: Padding(
+                  //     padding:
+                  //         const EdgeInsetsDirectional.fromSTEB(80, 5, 80, 16),
+                  //     child: ElevatedButton(
+                  //       child: const SizedBox(
+                  //         height: 56,
+                  //         width: double.infinity,
+                  //         child: Center(
+                  //           child: Text(
+                  //             'Next',
+                  //             style:
+                  //                 TextStyle(fontSize: 20, color: Colors.white),
+                  //             textAlign: TextAlign.center,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       style: ElevatedButton.styleFrom(
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(20.0),
+                  //         ),
+                  //         primary: buttonColor,
+                  //         elevation: 0,
+                  //         shadowColor: Colors.transparent,
+                  //       ),
+                  //       onPressed: () {
+                  //         if (_formKey.currentState!.validate()) {
+                  //           _quotationOrder.quotationRequester =
+                  //               quotationRequesterTextController.text;
+                  //           _quotationOrder.submissionDate = DateTime.now();
+                  //           Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) => QuotationOrderConfirmPage(
+                  //                 quotationOrder: _quotationOrder,
+                  //                 history: false,
+                  //               ),
+                  //             ),
+                  //           );
+                  //           // print(
+                  //           //     'Button NEXT ... ${_quotationOrder.toJson()}');
+                  //         }
+                  //         // Navigator.pop(context);
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
+                  //////////////////////////////////
+                  //////////////////////////////////
                 ]),
           ),
         ),
@@ -227,7 +266,19 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
         ),
         child: FloatingActionButton.extended(
           backgroundColor: keyColor,
-          onPressed: () {},
+          onPressed: () {
+            // context.read<ApplicationState>().selectedIndex = 4;
+            setState(() {
+              Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (BuildContext context) {
+                    return QuotationEditPage(
+                      callback: addQuotationItem,
+                      isEdit: false,
+                    );
+                  },
+                  fullscreenDialog: true));
+            });
+          },
           elevation: 0,
           icon: Icon(Icons.add),
           label: Text(

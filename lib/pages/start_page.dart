@@ -1,6 +1,8 @@
 import 'package:adaptive_app_demos/pages/quotation_order_list_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import '../application_state.dart';
 import '../global/styling.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +33,7 @@ class StartPage extends StatelessWidget {
                     ),
                   )),
               onTap: () {
+                // context.read<ApplicationState>().selectedIndex = 3;
                 Navigator.push(
                   context,
                   MaterialPageRoute(

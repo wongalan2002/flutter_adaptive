@@ -1,3 +1,4 @@
+import 'package:adaptive_app_demos/pages/quotation_edit_page.dart';
 import 'package:adaptive_app_demos/pages/quotation_order_list_page.dart';
 import 'package:adaptive_app_demos/pages/setting_page.dart';
 
@@ -100,6 +101,8 @@ class _PageStack extends StatelessWidget {
     if (index == 2) page = SettingPage();
     // if (index == 2) page = AdaptiveReflowPage();
     // if (index == 3) page = FocusExamplesPage();
+    if (index == 3) page = QuotationOrderListPage();
+    if (index == 4) page = QuotationEditPage(isEdit: false);
     return FocusTraversalGroup(child: page ?? Container());
   }
 }
