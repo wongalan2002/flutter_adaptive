@@ -118,9 +118,20 @@ class VerifyEmailPageState extends State<VerifyEmailPage> {
                                       padding: const EdgeInsets.all(16.0),
                                       child: Column(
                                         children: [
-                                          Text(
-                                            "A verification email has been sent to your email ${FirebaseAuth.instance.currentUser!.email}.",
+                                          RichText(
                                             textAlign: TextAlign.center,
+                                            text: new TextSpan(
+                                              children: [
+                                                new TextSpan(
+                                                  text: "A verification email has been sent to your email ",
+                                                  style: new TextStyle(color: Colors.black),
+                                                ),
+                                                new TextSpan(
+                                                  text: '${FirebaseAuth.instance.currentUser!.email}.',
+                                                  style: new TextStyle(color: Colors.blue),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           SizedBox(height: 8),
                                           RichText(
