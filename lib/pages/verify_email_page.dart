@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -118,8 +119,28 @@ class VerifyEmailPageState extends State<VerifyEmailPage> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            "A verification email has been sent to your email ${FirebaseAuth.instance.currentUser!.email}",
+                                            "A verification email has been sent to your email ${FirebaseAuth.instance.currentUser!.email}.",
                                             textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 8),
+                                          RichText(
+                                            textAlign: TextAlign.center,
+                                            text: new TextSpan(
+                                              children: [
+                                                new TextSpan(
+                                                  text: "If this email address is incorrect you can ",
+                                                  style: new TextStyle(color: Colors.black),
+                                                ),
+                                                new TextSpan(
+                                                  text: 'start over',
+                                                  style: new TextStyle(color: Colors.blue),
+                                                  recognizer: new TapGestureRecognizer()
+                                                    ..onTap = () {
+                                                      FirebaseAuth.instance.signOut();
+                                                    },
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           SizedBox(height: 24),
                                           ElevatedButton(
