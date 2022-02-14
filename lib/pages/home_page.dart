@@ -30,6 +30,8 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  var keyOne = GlobalKey<NavigatorState>();
+  var keyTwo = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +72,29 @@ class HomePageState extends State<HomePage> {
                       ]
                       // Horizontal layout with desktop style side menu
                       else ...[
-                        Row(
-                          children: [
-                            _SideMenu(),
-                            Expanded(child: _PageStack()),
-                          ],
-                        ),
+                        Row(children: [
+                          _SideMenu(),
+                          Expanded(
+                            child: Container(
+                              child: WillPopScope(
+                                onWillPop: () async =>
+                                    !await keyTwo.currentState!.maybePop(),
+                                child: Navigator(
+                                  key: keyTwo,
+                                  onGenerateRoute: (routeSettings) {
+                                    return MaterialPageRoute(
+                                      builder: (context) => _PageStack(),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]
+                            // _SideMenu(),
+                            // Expanded(child: _PageStack()),
+                            // ],
+                            ),
                       ],
                     ]),
                   ),
@@ -144,8 +163,8 @@ class _SideMenu extends StatelessWidget {
           // Divider
           Align(
               alignment: Alignment.centerRight,
-              child: Container(
-                  width: 1, height: double.infinity, color:dimGrey)),
+              child:
+                  Container(width: 1, height: double.infinity, color: dimGrey)),
         ],
       ),
     );

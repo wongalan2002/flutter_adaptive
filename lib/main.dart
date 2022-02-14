@@ -34,6 +34,7 @@ class App extends StatefulWidget {
     _AppState? state = context.findAncestorStateOfType<_AppState>();
     state?.changeLanguage(newLocale);
   }
+
   @override
   State<App> createState() => _AppState();
 }
@@ -78,7 +79,11 @@ class _AppState extends State<App> {
             textTheme: GoogleFonts.notoSansTextTheme(
               Theme.of(context).textTheme,
             ),
-              visualDensity: density
+            visualDensity: density,
+            pageTransitionsTheme: PageTransitionsTheme(builders: {
+              TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+              TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+            }),
           ),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
@@ -102,3 +107,135 @@ class _AppState extends State<App> {
     );
   }
 }
+
+// import 'package:flutter/material.dart';
+//
+// void main() {
+//   runApp(App());
+// }
+//
+// class App extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       initialRoute: "/",
+//       routes: {
+//         '/': (context) => SomeOneView(),
+//         '/two': (context) => SomeTwoView(),
+//       },
+//     );
+//   }
+// }
+//
+// class SomeOneView extends StatefulWidget {
+//   @override
+//   _SomeOneViewState createState() => _SomeOneViewState();
+// }
+//
+// class _SomeOneViewState extends State<SomeOneView> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         Container(
+//           width: 100,
+//           color: Colors.green,
+//         ),
+//         Expanded(
+//           child: Container(
+//             width: double.infinity,
+//             color: Colors.indigo,
+//             height: double.infinity,
+//             margin: EdgeInsets.symmetric(horizontal: 30),
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: <Widget>[
+//                 MaterialButton(
+//                   color: Colors.white,
+//                   child: Text('Next'),
+//                   onPressed: () => Navigator.of(context).pushNamed('/two'),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+//
+// class SomeTwoView extends StatefulWidget {
+//   @override
+//   _SomeTwoViewState createState() => _SomeTwoViewState();
+// }
+//
+// class _SomeTwoViewState extends State<SomeTwoView> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return WillPopScope(
+//       onWillPop: () async {
+//         return false;
+//       },
+//       child: Navigator(
+//         initialRoute: "two/home",
+//         onGenerateRoute: (RouteSettings settings) {
+//           WidgetBuilder builder;
+//           switch (settings.name) {
+//             case "two/home":
+//               builder = (BuildContext context) => HomeOfTwo();
+//               break;
+//             case "two/nextpage":
+//               builder = (BuildContext context) => PageTwoOfTwo();
+//               break;
+//           }
+//           return MaterialPageRoute(
+//               builder: (x) => SomeOneView(), settings: settings);
+//         },
+//       ),
+//     );
+//   }
+// }
+//
+// class HomeOfTwo extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       height: double.infinity,
+//       color: Colors.grey,
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: <Widget>[
+//           ElevatedButton(
+//             child: Text('Next'),
+//             onPressed: () => Navigator.of(context).pushNamed('two/home'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+//
+// class PageTwoOfTwo extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       height: double.infinity,
+//       color: Colors.teal,
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: <Widget>[
+//           MaterialButton(
+//             child: Text('Next'),
+//             onPressed: () => Navigator.of(context).pushNamed('/three'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
