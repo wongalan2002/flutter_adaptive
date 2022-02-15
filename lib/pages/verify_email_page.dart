@@ -128,7 +128,10 @@ class VerifyEmailPageState extends State<VerifyEmailPage> {
                                                 ),
                                                 new TextSpan(
                                                   text: '${FirebaseAuth.instance.currentUser!.email}.',
-                                                  style: new TextStyle(color: Colors.blue),
+                                                  style: new TextStyle(
+                                                      color: Colors.black,
+                                                      decoration: TextDecoration.underline
+                                                  ),
                                                 ),
                                               ],
                                             ),

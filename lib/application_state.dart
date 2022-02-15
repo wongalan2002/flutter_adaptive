@@ -8,12 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'models/guestbook_message.dart';
 // import 'View/yes_no_session.dart';
 import 'authentication.dart';
+import 'models/quotation_item.dart';
 import 'models/quotation_order.dart';
 import 'models/user_profile.dart';
 
 ///////////////////////////////////////////////////////////
 class ApplicationState extends ChangeNotifier {
-
   StreamSubscription<QuerySnapshot>? _quotationOrdersSubscription;
   StreamSubscription<DocumentSnapshot>? _userProfileSubscription;
   StreamSubscription<QuerySnapshot>? _guestBookSubscription;
@@ -27,6 +27,10 @@ class ApplicationState extends ChangeNotifier {
 
   List<GuestBookMessage> _guestBookMessages = [];
   List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
+
+  QuotationOrder _quotationOrder =
+  QuotationOrder(quotationItems: [], quotationRequester: '');
+  QuotationOrder get quotationOrder => _quotationOrder;
 
   List<QuotationOrder> _quotationOrders = [];
   List<QuotationOrder> get quotationOrders => _quotationOrders;
@@ -224,7 +228,6 @@ class ApplicationState extends ChangeNotifier {
     // });
   }
 
-
   void toggleTouchMode() => touchMode = !touchMode;
 /////////////////////////////////////////////////////
 
@@ -280,7 +283,7 @@ class ApplicationState extends ChangeNotifier {
       // await FirebaseAuth.instance
       //     .createUserWithEmailAndPassword(email: email, password: password)
       //     .then((value) => addNewUser(email));
-      _loginState = ApplicationLoginState.verifyEmail;
+      // _loginState = ApplicationLoginState.verifyEmail;
     } on FirebaseAuthException catch (e) {
       errorCallback(e);
     }
@@ -329,7 +332,6 @@ class ApplicationState extends ChangeNotifier {
     return FirebaseAuth.instance.currentUser!.emailVerified;
   }
 
-
   void signOut() {
     FirebaseAuth.instance.signOut();
   }
@@ -338,7 +340,6 @@ class ApplicationState extends ChangeNotifier {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
     }
-
     return FirebaseFirestore.instance
         .collection('guestbook')
         .add(<String, dynamic>{
@@ -373,5 +374,31 @@ class ApplicationState extends ChangeNotifier {
 
   Stream<QuerySnapshot> streamImage() {
     return FirebaseFirestore.instance.collection('imageURLs').snapshots();
+  }
+
+  addQuotationItem(newValue) {
+    _quotationOrder.quotationItems!.add(newValue);
+    notifyListeners();
+  }
+
+  updateQuotationItem(int index, QuotationItem newValue, bool deleteThis) {
+    if (deleteThis == true) {
+      _quotationOrder.quotationItems!.removeAt(index);
+    } else {
+      _quotationOrder.quotationItems![index] = newValue;
+    }
+    notifyListeners();
+  }
+
+  deleteQuotationItem(index) {
+    print("Delete at ${index}");
+    _quotationOrder.quotationItems!.removeAt(index);
+    notifyListeners();
+  }
+
+  updateQuotationRequester(value){
+    _quotationOrder.quotationRequester = value;
+    print(value);
+    notifyListeners();
   }
 }

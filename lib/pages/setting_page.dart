@@ -1,3 +1,4 @@
+import '../widgets/ok_cancel_dialog.dart';
 import 'setting_profile_edit_page.dart';
 import '../global/styling.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,6 +20,16 @@ class SettingPage extends StatelessWidget {
     //   localizations.settingTitleTerms,
     //   localizations.settingTitleAboutUs,
     //   localizations.settingTitleLogout];
+    void _handleLogoutPressed() async {
+      String message = "Are you sure you want to logout?";
+      bool? doLogout = await showDialog(
+          context: context, builder: (_) => OkCancelDialog(message: message));
+      if (doLogout ?? false) {
+        context.read<ApplicationState>().selectedIndex = 0;
+        context.read<ApplicationState>().signOut();
+        // context.read<AppModel>().logout();
+      }
+    }
 
     return Consumer<ApplicationState>(
       builder: (context, appState, _) => Scaffold(
@@ -77,9 +88,8 @@ class SettingPage extends StatelessWidget {
                             BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    // Navigator.pushNamed(context, "myRoute");
                   },
                   child: Container(
                       child: Padding(
@@ -95,9 +105,8 @@ class SettingPage extends StatelessWidget {
                             BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    // Navigator.pushNamed(context, "myRoute");
                   },
                   child: Container(
                       child: Padding(
@@ -113,9 +122,8 @@ class SettingPage extends StatelessWidget {
                             BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    // Navigator.pushNamed(context, "myRoute");
                   },
                   child: Container(
                       child: Padding(
@@ -131,19 +139,23 @@ class SettingPage extends StatelessWidget {
                             BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    // Navigator.pushNamed(context, "myRoute");
+                    _handleLogoutPressed();
                   },
                   child: Container(
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
-                      child: Text(
-                        localizations.settingTitleLogout,
-                        style: EasyQuoteTextStyles.subtitle,
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                        child: Text(
+                          localizations.settingTitleLogout,
+                          style: EasyQuoteTextStyles.subtitle,
+                        ),
                       ),
-                    ),
-                  ),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                            bottom:
+                            BorderSide(width: 1, color: mainSessionButton)),
+                      )),
                 ),
               ],
             ),

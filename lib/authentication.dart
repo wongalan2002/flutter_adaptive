@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 enum ApplicationLoginState {
   loggedOut,
-  emailAddress,
-  register,
-  password,
+  // emailAddress,
+  // register,
+  // password,
   loggedIn,
-  verifyEmail,
+  // verifyEmail,
 }
 
 // class Authentication extends StatelessWidget {

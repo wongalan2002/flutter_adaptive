@@ -132,16 +132,15 @@ class _SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _handleLogoutPressed() async {
-      String message = "Are you sure you want to logout?";
-      bool? doLogout = await showDialog(
-          context: context, builder: (_) => OkCancelDialog(message: message));
-      if (doLogout ?? false) {
-        context.read<ApplicationState>().signOut();
-        // context.read<AppModel>().logout();
-      }
-    }
-
+    // void _handleLogoutPressed() async {
+    //   String message = "Are you sure you want to logout?";
+    //   bool? doLogout = await showDialog(
+    //       context: context, builder: (_) => OkCancelDialog(message: message));
+    //   if (doLogout ?? false) {
+    //     context.read<ApplicationState>().signOut();
+    //     // context.read<AppModel>().logout();
+    //   }
+    // }
     return Container(
       color: backgroundColor,
       width: 250,
@@ -156,9 +155,9 @@ class _SideMenu extends StatelessWidget {
             // SecondaryMenuButton(label: "Submenu Item 2"),
             // SecondaryMenuButton(label: "Submenu Item 3"),
             Spacer(),
-            OutlinedButton(
-                child: Text("Logout"), onPressed: _handleLogoutPressed),
-            SizedBox(height: Insets.large),
+            // OutlinedButton(
+            //     child: Text("Logout"), onPressed: _handleLogoutPressed),
+            // SizedBox(height: Insets.large),
           ]),
           // Divider
           Align(
