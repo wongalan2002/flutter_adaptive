@@ -199,22 +199,22 @@ class _SettingProfileEditPageState extends State<SettingProfileEditPage> {
                       ),
                     ],
                     onPressed: (int index) {
-                      setState(() {
-                        if (index == 0) {
-                          {
-                            isSelected = [true, false];
-                            App.setLocale(context, const Locale('zh', ''));
-                            locale = "zh";
-                          }
-                        }
-                        if (index == 1) {
-                          {
-                            isSelected = [false, true];
-                            App.setLocale(context, const Locale('en', ''));
-                            locale = "en";
-                          }
-                        }
-                      });
+                      // setState(() {
+                      //   if (index == 0) {
+                      //     {
+                      //       isSelected = [true, false];
+                      //       App.setLocale(context, const Locale('zh', ''));
+                      //       locale = "zh";
+                      //     }
+                      //   }
+                      //   if (index == 1) {
+                      //     {
+                      //       isSelected = [false, true];
+                      //       App.setLocale(context, const Locale('en', ''));
+                      //       locale = "en";
+                      //     }
+                      //   }
+                      // });
                     },
                     isSelected: isSelected,
                   ),

@@ -107,135 +107,94 @@ class _AppState extends State<App> {
     );
   }
 }
-
-
+//
 // import 'package:flutter/material.dart';
 //
-// void main() {
-//   runApp(App());
-// }
+// void main() => runApp(const RestorationExampleApp());
 //
-// class App extends StatelessWidget {
+// class RestorationExampleApp extends StatelessWidget {
+//   const RestorationExampleApp({Key? key}) : super(key: key);
+//
 //   @override
 //   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       initialRoute: "/",
-//       routes: {
-//         '/': (context) => SomeOneView(),
-//         '/two': (context) => SomeTwoView(),
-//       },
+//     return const MaterialApp(
+//       restorationScopeId: 'app',
+//       title: 'Restorable Counter',
+//       home: RestorableCounter(restorationId: 'counter'),
 //     );
 //   }
 // }
 //
-// class SomeOneView extends StatefulWidget {
+// class RestorableCounter extends StatefulWidget {
+//   const RestorableCounter({Key? key, this.restorationId}) : super(key: key);
+//
+//   final String? restorationId;
+//
 //   @override
-//   _SomeOneViewState createState() => _SomeOneViewState();
+//   State<RestorableCounter> createState() => _RestorableCounterState();
 // }
 //
-// class _SomeOneViewState extends State<SomeOneView> {
+// // The [State] object uses the [RestorationMixin] to make the current value
+// // of the counter restorable.
+// class _RestorableCounterState extends State<RestorableCounter>
+//     with RestorationMixin {
+//   // The current value of the counter is stored in a [RestorableProperty].
+//   // During state restoration it is automatically restored to its old value.
+//   // If no restoration data is available to restore the counter from, it is
+//   // initialized to the specified default value of zero.
+//   final RestorableInt _counter = RestorableInt(0);
+//
+//   // In this example, the restoration ID for the mixin is passed in through
+//   // the [StatefulWidget]'s constructor.
+//   @override
+//   String? get restorationId => widget.restorationId;
+//
+//   @override
+//   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+//     // All restorable properties must be registered with the mixin. After
+//     // registration, the counter either has its old value restored or is
+//     // initialized to its default value.
+//     registerForRestoration(_counter, 'count');
+//   }
+//
+//   void _incrementCounter() {
+//     setState(() {
+//       // The current value of the property can be accessed and modified via
+//       // the value getter and setter.
+//       _counter.value++;
+//     });
+//   }
+//
+//   @override
+//   void dispose() {
+//     _counter.dispose();
+//     super.dispose();
+//   }
+//
 //   @override
 //   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Container(
-//           width: 100,
-//           color: Colors.green,
-//         ),
-//         Expanded(
-//           child: Container(
-//             width: double.infinity,
-//             color: Colors.indigo,
-//             height: double.infinity,
-//             margin: EdgeInsets.symmetric(horizontal: 30),
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: <Widget>[
-//                 MaterialButton(
-//                   color: Colors.white,
-//                   child: Text('Next'),
-//                   onPressed: () => Navigator.of(context).pushNamed('/two'),
-//                 ),
-//               ],
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Restorable Counter'),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             const Text(
+//               'You have pushed the button this many times:',
 //             ),
-//           ),
+//             Text(
+//               '${_counter.value}',
+//               style: Theme.of(context).textTheme.headline4,
+//             ),
+//           ],
 //         ),
-//       ],
-//     );
-//   }
-// }
-//
-// class SomeTwoView extends StatefulWidget {
-//   @override
-//   _SomeTwoViewState createState() => _SomeTwoViewState();
-// }
-//
-// class _SomeTwoViewState extends State<SomeTwoView> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return WillPopScope(
-//       onWillPop: () async {
-//         return false;
-//       },
-//       child: Navigator(
-//         initialRoute: "two/home",
-//         onGenerateRoute: (RouteSettings settings) {
-//           WidgetBuilder builder;
-//           switch (settings.name) {
-//             case "two/home":
-//               builder = (BuildContext context) => HomeOfTwo();
-//               break;
-//             case "two/nextpage":
-//               builder = (BuildContext context) => PageTwoOfTwo();
-//               break;
-//           }
-//           return MaterialPageRoute(
-//               builder: (x) => SomeOneView(), settings: settings);
-//         },
 //       ),
-//     );
-//   }
-// }
-//
-// class HomeOfTwo extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: double.infinity,
-//       height: double.infinity,
-//       color: Colors.grey,
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: <Widget>[
-//           ElevatedButton(
-//             child: Text('Next'),
-//             onPressed: () => Navigator.of(context).pushNamed('two/home'),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-//
-// class PageTwoOfTwo extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: double.infinity,
-//       height: double.infinity,
-//       color: Colors.teal,
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: <Widget>[
-//           MaterialButton(
-//             child: Text('Next'),
-//             onPressed: () => Navigator.of(context).pushNamed('/three'),
-//           ),
-//         ],
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: _incrementCounter,
+//         tooltip: 'Increment',
+//         child: const Icon(Icons.add),
 //       ),
 //     );
 //   }
