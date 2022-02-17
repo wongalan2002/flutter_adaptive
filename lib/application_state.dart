@@ -13,7 +13,7 @@ import 'models/quotation_order.dart';
 import 'models/user_profile.dart';
 
 ///////////////////////////////////////////////////////////
-class ApplicationState extends ChangeNotifier {
+class ApplicationState with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _quotationOrdersSubscription;
   StreamSubscription<DocumentSnapshot>? _userProfileSubscription;
   StreamSubscription<QuerySnapshot>? _guestBookSubscription;
@@ -73,9 +73,12 @@ class ApplicationState extends ChangeNotifier {
   bool getDefaultTouchMode() => DeviceType.isMobile == true;
 
   // Main menu, selected page
-  int _selectedIndex = 0;
-  int get selectedIndex => _selectedIndex;
-  set selectedIndex(int value) => notify(() => _selectedIndex = value);
+  int _selectedMenuIndex = 0;
+  int get selectedMenuIndex => _selectedMenuIndex;
+  set selectedMenuIndex(int value) {
+    _selectedMenuIndex = value;
+    notifyListeners();
+  }
 
   // Touch mode, determines density of views
   late bool _touchMode = getDefaultTouchMode();
@@ -358,7 +361,7 @@ class ApplicationState extends ChangeNotifier {
   }
 
   void reset() {
-    _selectedIndex = 0;
+    selectedMenuIndex = 0;
     _touchMode = getDefaultTouchMode();
   }
 /////////////////////////////////////////////////////

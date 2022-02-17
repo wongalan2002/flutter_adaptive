@@ -34,7 +34,7 @@ class StartPage extends StatelessWidget {
                   )),
               onTap: () {
                 // Navigator.of(context).push(_createRoute(QuotationOrderListPage()));
-                context.read<ApplicationState>().selectedIndex = 3;
+                context.read<ApplicationState>().selectedMenuIndex = 3;
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(

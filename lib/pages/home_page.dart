@@ -111,7 +111,7 @@ class HomePageState extends State<HomePage> {
 class _PageStack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    int index = context.select((ApplicationState model) => model.selectedIndex);
+    int index = context.select((ApplicationState model) => model.selectedMenuIndex);
     Widget? page;
     // if (index == 0) page = AdaptiveGridPage();
     if (index == 0) page = StartPage();
@@ -173,8 +173,8 @@ class _SideMenu extends StatelessWidget {
 List<Widget> getMainMenuChildren(BuildContext context) {
   // Define a method to change pages in the AppModel
   void changePage(int value) =>
-      context.read<ApplicationState>().selectedIndex = value;
-  int index = context.select((ApplicationState m) => m.selectedIndex);
+      context.read<ApplicationState>().selectedMenuIndex = value;
+  int index = context.select((ApplicationState m) => m.selectedMenuIndex);
   return [
     SelectedPageButton(
       onPressed: () => changePage(0),
