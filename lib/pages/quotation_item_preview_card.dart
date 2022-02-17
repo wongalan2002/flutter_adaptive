@@ -37,6 +37,7 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
     return OpenContainer(
       openBuilder: (context, closedContainer) {
         return QuotationEditPage(
+          restorationId: 'quotationEdit',
           callback: callback,
           quotationItem: widget.quotationItem,
           quotationItemIndex: widget.index,

@@ -11,29 +11,35 @@ import '../global/styling.dart';
 class QuotationEditPage extends StatefulWidget {
   QuotationEditPage(
       {Key? key,
-        this.callback,
-        this.quotationItem,
-        this.quotationItemIndex,
-        required this.isEdit})
+      this.callback,
+      this.quotationItem,
+      this.quotationItemIndex,
+      required this.isEdit,
+      this.restorationId})
       : super(key: key);
   Function? callback;
   QuotationItem? quotationItem;
   int? quotationItemIndex;
   final bool isEdit;
+  final String? restorationId;
 
   @override
   _QuotationEditPageState createState() => _QuotationEditPageState();
 }
 
-class _QuotationEditPageState extends State<QuotationEditPage> {
+class _QuotationEditPageState extends State<QuotationEditPage>
+    with RestorationMixin {
   bool detailVisible = false;
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  late TextEditingController itemTextController = TextEditingController();
-  late TextEditingController qtyTextController = TextEditingController();
-  late TextEditingController unitTextController = TextEditingController();
-  late TextEditingController descriptionTextController =
-  TextEditingController();
+  late RestorableTextEditingController itemTextController =
+      RestorableTextEditingController();
+  late RestorableTextEditingController qtyTextController =
+      RestorableTextEditingController();
+  late RestorableTextEditingController unitTextController =
+      RestorableTextEditingController();
+  late RestorableTextEditingController descriptionTextController =
+      RestorableTextEditingController();
 
   final imageMaxLimit = 3;
   List<XFile>? _imageFileList;
@@ -50,24 +56,32 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
     }
   }
 
-
-  void didChangeDependencies() {
-    widget.quotationItem?.itemName != null
-        ? itemTextController.text = widget.quotationItem!.itemName!
-        : itemTextController.text = "";
-    widget.quotationItem?.quantity != null
-        ? qtyTextController.text = widget.quotationItem!.quantity!.toString()
-        : qtyTextController.text = "";
-    widget.quotationItem?.unit != null
-        ? unitTextController.text = widget.quotationItem!.unit!
-        : unitTextController.text = "";
-    widget.quotationItem?.description != null
-        ? descriptionTextController.text = widget.quotationItem!.description!
-        : descriptionTextController.text = "";
-    widget.quotationItem?.imageFileList != null
-        ? _imageFileList = widget.quotationItem?.imageFileList!
-        : _imageFileList = [];
+  @override
+  void dispose() {
+    itemTextController.dispose();
+    qtyTextController.dispose();
+    unitTextController.dispose();
+    descriptionTextController.dispose();
+    super.dispose();
   }
+
+  // void didChangeDependencies() {
+  //   widget.quotationItem?.itemName != null
+  //       ? itemTextController.value.text = widget.quotationItem!.itemName!
+  //       : itemTextController.value.text = "";
+  //   widget.quotationItem?.quantity != null
+  //       ? qtyTextController.value.text = widget.quotationItem!.quantity!.toString()
+  //       : qtyTextController.value.text = "";
+  //   widget.quotationItem?.unit != null
+  //       ? unitTextController.value.text = widget.quotationItem!.unit!
+  //       : unitTextController.value.text = "";
+  //   widget.quotationItem?.description != null
+  //       ? descriptionTextController.value.text = widget.quotationItem!.description!
+  //       : descriptionTextController.value.text = "";
+  //   widget.quotationItem?.imageFileList != null
+  //       ? _imageFileList = widget.quotationItem?.imageFileList!
+  //       : _imageFileList = [];
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +123,9 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                         widget.callback!(
                             widget.quotationItemIndex,
                             QuotationItem(
-                              itemName: itemTextController.text,
-                              quantity: int.parse(qtyTextController.text),
-                              description: descriptionTextController.text,
+                              itemName: itemTextController.value.text,
+                              quantity: int.parse(qtyTextController.value.text),
+                              description: descriptionTextController.value.text,
                             ),
                             true);
                       },
@@ -144,7 +158,7 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                   ),
                 ),
                 TextFormField(
-                  controller: itemTextController,
+                  controller: itemTextController.value,
                   decoration: formInputDecoration.copyWith(
                       hintText: localizations.quotaItemTextHint),
                   validator: (value) {
@@ -174,7 +188,7 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                           flex: 2,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: qtyTextController,
+                            controller: qtyTextController.value,
                             decoration: formInputDecoration.copyWith(
                                 hintText: localizations.quotaItemQuantityHint),
                             inputFormatters: <TextInputFormatter>[
@@ -185,11 +199,11 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter some number';
                               }
-                              if (int.parse(qtyTextController.text) >
+                              if (int.parse(qtyTextController.value.text) >
                                   99999999999) {
                                 return 'You have reached maximum number';
                               }
-                              if (int.parse(qtyTextController.text) <= 0) {
+                              if (int.parse(qtyTextController.value.text) <= 0) {
                                 return 'Quantity must be larger than zero';
                               }
                               return null;
@@ -206,7 +220,7 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                             visible: detailVisible,
                             child: Flexible(
                               child: TextFormField(
-                                controller: unitTextController,
+                                controller: unitTextController.value,
                                 decoration: formInputDecoration.copyWith(
                                     hintText: localizations.quotaItemUnit),
                               ),
@@ -247,7 +261,7 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                     child: TextFormField(
                       keyboardType: TextInputType.multiline,
                       maxLines: 7,
-                      controller: descriptionTextController,
+                      controller: descriptionTextController.value,
                       decoration: formInputDecoration.copyWith(
                           hintText: localizations.quotaItemDescriptionHint),
                     ),
@@ -273,78 +287,78 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                         itemBuilder: (context, index) {
                           return index == 0
                               ? Center(
-                            child: Ink(
-                                decoration: const ShapeDecoration(
-                                    shape: CircleBorder(),
-                                    color: activeBackgroundColor),
-                                height: 100,
-                                width: 60,
-                                child: IconButton(
-                                    icon: const Icon(Icons.photo),
-                                    color: Colors.white,
-                                    onPressed: () {
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
-                                      if (_imageFileList!.length <
-                                          imageMaxLimit &&
-                                          !uploading) {
-                                        _showPicker(context);
-                                      }
-                                    })),
-                          )
+                                  child: Ink(
+                                      decoration: const ShapeDecoration(
+                                          shape: CircleBorder(),
+                                          color: activeBackgroundColor),
+                                      height: 100,
+                                      width: 60,
+                                      child: IconButton(
+                                          icon: const Icon(Icons.photo),
+                                          color: Colors.white,
+                                          onPressed: () {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            if (_imageFileList!.length <
+                                                    imageMaxLimit &&
+                                                !uploading) {
+                                              _showPicker(context);
+                                            }
+                                          })),
+                                )
                               : SizedBox(
-                            width: 100,
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment:
-                                  const AlignmentDirectional(0, 0),
-                                  child: kIsWeb
-                                      ? Container(
-                                    margin: const EdgeInsets.all(3),
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              _imageFileList![index - 1]
-                                                  .path),
-                                          fit: BoxFit.cover,
-                                        )),
-                                  )
-                                      : Container(
-                                    margin: const EdgeInsets.all(3),
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: FileImage(File(
-                                              _imageFileList![index - 1]
-                                                  .path)),
-                                          fit: BoxFit.cover,
-                                        )),
-                                  ),
-                                ),
-                                Align(
-                                    alignment:
-                                    const AlignmentDirectional(1, -1),
-                                    child: ElevatedButton(
-                                      child: const Icon(
-                                        Icons.delete,
-                                        size: 15,
+                                  width: 100,
+                                  child: Stack(
+                                    children: [
+                                      Align(
+                                        alignment:
+                                            const AlignmentDirectional(0, 0),
+                                        child: kIsWeb
+                                            ? Container(
+                                                margin: const EdgeInsets.all(3),
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      _imageFileList![index - 1]
+                                                          .path),
+                                                  fit: BoxFit.cover,
+                                                )),
+                                              )
+                                            : Container(
+                                                margin: const EdgeInsets.all(3),
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                  image: FileImage(File(
+                                                      _imageFileList![index - 1]
+                                                          .path)),
+                                                  fit: BoxFit.cover,
+                                                )),
+                                              ),
                                       ),
-                                      style: ElevatedButton.styleFrom(
-                                          shape: const CircleBorder(),
-                                          padding:
-                                          const EdgeInsets.all(0),
-                                          primary: buttonColor),
-                                      onPressed: () {
-                                        setState(() {
-                                          _imageFileList!
-                                              .removeAt(index - 1);
-                                        });
-                                        print(index);
-                                      },
-                                    )),
-                              ],
-                            ),
-                          );
+                                      Align(
+                                          alignment:
+                                              const AlignmentDirectional(1, -1),
+                                          child: ElevatedButton(
+                                            child: const Icon(
+                                              Icons.delete,
+                                              size: 15,
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                                shape: const CircleBorder(),
+                                                padding:
+                                                    const EdgeInsets.all(0),
+                                                primary: buttonColor),
+                                            onPressed: () {
+                                              setState(() {
+                                                _imageFileList!
+                                                    .removeAt(index - 1);
+                                              });
+                                              print(index);
+                                            },
+                                          )),
+                                    ],
+                                  ),
+                                );
                         }),
                   ),
                 ),
@@ -380,10 +394,10 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                           widget.callback!(
                               widget.quotationItemIndex,
                               QuotationItem(
-                                itemName: itemTextController.text,
-                                quantity: int.parse(qtyTextController.text),
-                                description: descriptionTextController.text,
-                                unit: unitTextController.text,
+                                itemName: itemTextController.value.text,
+                                quantity: int.parse(qtyTextController.value.text),
+                                description: descriptionTextController.value.text,
+                                unit: unitTextController.value.text,
                                 imageFileList: _imageFileList,
                               ),
                               false);
@@ -392,10 +406,10 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                         if (_formKey.currentState!.validate()) {
                           Navigator.of(context).pop();
                           widget.callback!(QuotationItem(
-                              itemName: itemTextController.text,
-                              quantity: int.parse(qtyTextController.text),
-                              description: descriptionTextController.text,
-                              unit: unitTextController.text,
+                              itemName: itemTextController.value.text,
+                              quantity: int.parse(qtyTextController.value.text),
+                              description: descriptionTextController.value.text,
+                              unit: unitTextController.value.text,
                               imageFileList: _imageFileList,
                               imageURLs: []));
                         }
@@ -475,5 +489,16 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
     } else {
       print(response.file);
     }
+  }
+
+  @override
+  String? get restorationId => widget.restorationId;
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(itemTextController, 'item');
+    registerForRestoration(qtyTextController, 'qty');
+    registerForRestoration(unitTextController, 'unit');
+    registerForRestoration(descriptionTextController, 'description');
   }
 }

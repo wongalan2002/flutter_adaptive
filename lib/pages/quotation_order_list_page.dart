@@ -281,6 +281,7 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                 Navigator.of(context).push(MaterialPageRoute<void>(
                     builder: (BuildContext context) {
                       return QuotationEditPage(
+                        restorationId: 'quotationEdit',
                         callback: appState.addQuotationItem,
                         isEdit: false,
                       );
@@ -297,23 +298,6 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // floatingActionButton: FloatingActionButton(
-        //   backgroundColor: keyColor,
-        //   child: const Icon(Icons.add),
-        //   onPressed: () {
-        //     setState(() {
-        //       Navigator.of(context).push(MaterialPageRoute<void>(
-        //           builder: (BuildContext context) {
-        //             return QuotationEditPage(
-        //               callback: addQuotationItem,
-        //               isEdit: false,
-        //             );
-        //           },
-        //           fullscreenDialog: true));
-        //     });
-        //   },
-        // ),
       ),
     );
   }
