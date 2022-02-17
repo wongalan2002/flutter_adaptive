@@ -39,23 +39,9 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> with RestorationMixin{
+class _AppState extends State<App>{
   ///////////////RestorableApplicationState///////////////
-  final _RestorableApplicationState _appState = _RestorableApplicationState();
 
-  @override
-  String get restorationId => 'easyQuoteState';
-
-  @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    registerForRestoration(_appState, 'state');
-  }
-
-  @override
-  void dispose() {
-    _appState.dispose();
-    super.dispose();
-  }
 
   ///////////////Change Language//////////////////////////////
   late Locale _locale = const Locale('zh', '');
@@ -129,54 +115,6 @@ class _AppState extends State<App> with RestorationMixin{
 
 }
 
-class _RestorableApplicationState extends RestorableListenable<ApplicationState>{
-  @override
-  ApplicationState createDefaultValue() {
-    return ApplicationState();
-  }
-
-  @override
-  ApplicationState fromPrimitives(Object? data) {
-    final appState = ApplicationState();
-    final appData = Map<String, dynamic>.from(data as Map);
-
-    appState.selectedMenuIndex = appData['selectedMenuIndex'] as int;
-
-    print("appState.selectedMenuIndex: ${appState.selectedMenuIndex}");
-
-    // appState.selectedEmailId = appData['selectedEmailId'] as int;
-    // appState.onSearchPage = appData['onSearchPage'] as bool;
-    //
-    // // The index of the MailboxPageType enum is restored.
-    // final mailboxPageIndex = appData['selectedMailboxPage'] as int;
-    // appState.selectedMailboxPage = MailboxPageType.values[mailboxPageIndex];
-    //
-    // final starredEmailIdsList = appData['starredEmailIds'] as List<dynamic>;
-    // appState.starredEmailIds = {
-    //   ...starredEmailIdsList.map<int>((dynamic id) => id as int),
-    // };
-    // final trashEmailIdsList = appData['trashEmailIds'] as List<dynamic>;
-    // appState.trashEmailIds = {
-    //   ...trashEmailIdsList.map<int>((dynamic id) => id as int),
-    // };
-    return appState;
-    throw appState;
-  }
-
-  @override
-  Object? toPrimitives() {
-    return <String, dynamic>{
-      'selectedMenuIndex' : value.selectedMenuIndex,
-      // 'selectedEmailId': value.selectedEmailId,
-      // // The index of the MailboxPageType enum is stored, since the value
-      // // has to be serializable.
-      // 'selectedMailboxPage': value.selectedMailboxPage.index,
-      // 'onSearchPage': value.onSearchPage,
-      // 'starredEmailIds': value.starredEmailIds.toList(),
-      // 'trashEmailIds': value.trashEmailIds.toList(),
-    };
-  }
-}
 
 ////////////////////////////////////////////
 //
