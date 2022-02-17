@@ -34,12 +34,12 @@ class StartPage extends StatelessWidget {
                   )),
               onTap: () {
                 // Navigator.of(context).push(_createRoute(QuotationOrderListPage()));
-                context.read<ApplicationState>().selectedMenuIndex = 3;
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const QuotationOrderListPage()),
-                // );
+                // context.read<ApplicationState>().selectedMenuIndex = 3;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const QuotationOrderListPage()),
+                );
               },
             ),
           ],

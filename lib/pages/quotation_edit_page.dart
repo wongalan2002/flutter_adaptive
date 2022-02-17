@@ -27,22 +27,35 @@ class QuotationEditPage extends StatefulWidget {
   _QuotationEditPageState createState() => _QuotationEditPageState();
 }
 
-class _QuotationEditPageState extends State<QuotationEditPage>
-    with RestorationMixin {
+class _QuotationEditPageState extends State<QuotationEditPage> {
   bool detailVisible = false;
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  late RestorableTextEditingController itemTextController =
-      RestorableTextEditingController();
-  late RestorableTextEditingController qtyTextController =
-      RestorableTextEditingController();
-  late RestorableTextEditingController unitTextController =
-      RestorableTextEditingController();
-  late RestorableTextEditingController descriptionTextController =
-      RestorableTextEditingController();
+
+  late TextEditingController itemTextController =
+  TextEditingController();
+  late TextEditingController qtyTextController =
+  TextEditingController();
+  late TextEditingController unitTextController =
+  TextEditingController();
+  late TextEditingController descriptionTextController =
+  TextEditingController();
+
+  // late RestorableTextEditingController itemTextController =
+  //     RestorableTextEditingController();
+  // late RestorableTextEditingController qtyTextController =
+  //     RestorableTextEditingController();
+  // late RestorableTextEditingController unitTextController =
+  //     RestorableTextEditingController();
+  // late RestorableTextEditingController descriptionTextController =
+  //     RestorableTextEditingController();
 
   final imageMaxLimit = 3;
   List<XFile>? _imageFileList;
+
+  set _imageFile(XFile? value) {
+    _imageFileList = value == null ? null : <XFile>[value];
+  }
   final _picker = ImagePicker();
   bool uploading = false;
 
@@ -65,23 +78,38 @@ class _QuotationEditPageState extends State<QuotationEditPage>
     super.dispose();
   }
 
-  // void didChangeDependencies() {
-  //   widget.quotationItem?.itemName != null
-  //       ? itemTextController.value.text = widget.quotationItem!.itemName!
-  //       : itemTextController.value.text = "";
-  //   widget.quotationItem?.quantity != null
-  //       ? qtyTextController.value.text = widget.quotationItem!.quantity!.toString()
-  //       : qtyTextController.value.text = "";
-  //   widget.quotationItem?.unit != null
-  //       ? unitTextController.value.text = widget.quotationItem!.unit!
-  //       : unitTextController.value.text = "";
-  //   widget.quotationItem?.description != null
-  //       ? descriptionTextController.value.text = widget.quotationItem!.description!
-  //       : descriptionTextController.value.text = "";
-  //   widget.quotationItem?.imageFileList != null
-  //       ? _imageFileList = widget.quotationItem?.imageFileList!
-  //       : _imageFileList = [];
-  // }
+  void didChangeDependencies() {
+    widget.quotationItem?.itemName != null
+        ? itemTextController.text = widget.quotationItem!.itemName!
+        : itemTextController.text = "";
+    widget.quotationItem?.quantity != null
+        ? qtyTextController.text = widget.quotationItem!.quantity!.toString()
+        : qtyTextController.text = "";
+    widget.quotationItem?.unit != null
+        ? unitTextController.text = widget.quotationItem!.unit!
+        : unitTextController.text = "";
+    widget.quotationItem?.description != null
+        ? descriptionTextController.text = widget.quotationItem!.description!
+        : descriptionTextController.text = "";
+    widget.quotationItem?.imageFileList != null
+        ? _imageFileList = widget.quotationItem?.imageFileList!
+        : _imageFileList = [];
+    // widget.quotationItem?.itemName != null
+    //     ? itemTextController.value.text = widget.quotationItem!.itemName!
+    //     : itemTextController.value.text = "";
+    // widget.quotationItem?.quantity != null
+    //     ? qtyTextController.value.text = widget.quotationItem!.quantity!.toString()
+    //     : qtyTextController.value.text = "";
+    // widget.quotationItem?.unit != null
+    //     ? unitTextController.value.text = widget.quotationItem!.unit!
+    //     : unitTextController.value.text = "";
+    // widget.quotationItem?.description != null
+    //     ? descriptionTextController.value.text = widget.quotationItem!.description!
+    //     : descriptionTextController.value.text = "";
+    // widget.quotationItem?.imageFileList != null
+    //     ? _imageFileList = widget.quotationItem?.imageFileList!
+    //     : _imageFileList = [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +186,8 @@ class _QuotationEditPageState extends State<QuotationEditPage>
                   ),
                 ),
                 TextFormField(
-                  controller: itemTextController.value,
+                  // controller: itemTextController.value,
+                  controller: itemTextController,
                   decoration: formInputDecoration.copyWith(
                       hintText: localizations.quotaItemTextHint),
                   validator: (value) {
@@ -188,7 +217,8 @@ class _QuotationEditPageState extends State<QuotationEditPage>
                           flex: 2,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: qtyTextController.value,
+                            // controller: qtyTextController.value,
+                            controller: qtyTextController,
                             decoration: formInputDecoration.copyWith(
                                 hintText: localizations.quotaItemQuantityHint),
                             inputFormatters: <TextInputFormatter>[
@@ -220,7 +250,8 @@ class _QuotationEditPageState extends State<QuotationEditPage>
                             visible: detailVisible,
                             child: Flexible(
                               child: TextFormField(
-                                controller: unitTextController.value,
+                                // controller: unitTextController.value,
+                                controller: unitTextController,
                                 decoration: formInputDecoration.copyWith(
                                     hintText: localizations.quotaItemUnit),
                               ),
@@ -261,7 +292,8 @@ class _QuotationEditPageState extends State<QuotationEditPage>
                     child: TextFormField(
                       keyboardType: TextInputType.multiline,
                       maxLines: 7,
-                      controller: descriptionTextController.value,
+                      // controller: descriptionTextController.value,
+                      controller: descriptionTextController,
                       decoration: formInputDecoration.copyWith(
                           hintText: localizations.quotaItemDescriptionHint),
                     ),
@@ -272,7 +304,7 @@ class _QuotationEditPageState extends State<QuotationEditPage>
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                     child: Text(
-                      '${localizations.quotaItemImage} ${_imageFileList!.length}/$imageMaxLimit',
+                      '${localizations.quotaItemImage} ${_imageFileList?.length}/$imageMaxLimit',
                       style: EasyQuoteTextStyles.subtitle,
                     ),
                   ),
@@ -491,14 +523,14 @@ class _QuotationEditPageState extends State<QuotationEditPage>
     }
   }
 
-  @override
-  String? get restorationId => widget.restorationId;
-
-  @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    registerForRestoration(itemTextController, 'item');
-    registerForRestoration(qtyTextController, 'qty');
-    registerForRestoration(unitTextController, 'unit');
-    registerForRestoration(descriptionTextController, 'description');
-  }
+  // @override
+  // String? get restorationId => widget.restorationId;
+  //
+  // @override
+  // void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+  //   registerForRestoration(itemTextController, 'item');
+  //   registerForRestoration(qtyTextController, 'qty');
+  //   registerForRestoration(unitTextController, 'unit');
+  //   registerForRestoration(descriptionTextController, 'description');
+  // }
 }
