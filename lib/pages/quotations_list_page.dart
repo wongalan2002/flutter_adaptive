@@ -30,12 +30,12 @@ class _QuotationsListPageState extends State<QuotationsListPage> {
     final isDesktop = MediaQuery.of(context).size.width > FormFactor.tablet;
     final isTablet = MediaQuery.of(context).size.width > FormFactor.handset;
     final startPadding = isTablet
-        ? 60.0
+        ? 0.0
         : isDesktop
         ? 120.0
         : 4.0;
     final endPadding = isTablet
-        ? 30.0
+        ? 0.0
         : isDesktop
         ? 60.0
         : 4.0;

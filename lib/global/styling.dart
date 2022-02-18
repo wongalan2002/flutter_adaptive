@@ -30,6 +30,7 @@ const secKeyColor = Color(0XFF2B4FAA);
 const dimGrey = Color(0XFFB0B0B0);
 const lightGrey = Color (0XFFEEEEEE);
 const titleColor = Color (0XFF2B4FAA);
+const listDivider = Color (0XFFDBDBDB);
 
 InputDecoration formInputDecoration = InputDecoration(
   filled: true,
@@ -84,7 +85,7 @@ class EasyQuoteTextStyles {
       fontSize: 24, fontWeight: FontWeight.w600, color: textColor);
 
   static final h6 = GoogleFonts.notoSans(
-      fontSize: 20, fontWeight: FontWeight.w600, color: textColor);
+      fontSize: 20, fontWeight: FontWeight.normal, color: Color(0xFF6B6B6B));
 
   static final subtitle = GoogleFonts.notoSans(fontSize: 18);
 

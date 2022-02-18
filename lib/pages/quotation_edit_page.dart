@@ -14,14 +14,12 @@ class QuotationEditPage extends StatefulWidget {
       this.callback,
       this.quotationItem,
       this.quotationItemIndex,
-      required this.isEdit,
-      this.restorationId})
+      required this.isEdit})
       : super(key: key);
   Function? callback;
   QuotationItem? quotationItem;
   int? quotationItemIndex;
   final bool isEdit;
-  final String? restorationId;
 
   @override
   _QuotationEditPageState createState() => _QuotationEditPageState();
@@ -32,14 +30,11 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  late TextEditingController itemTextController =
-  TextEditingController();
-  late TextEditingController qtyTextController =
-  TextEditingController();
-  late TextEditingController unitTextController =
-  TextEditingController();
+  late TextEditingController itemTextController = TextEditingController();
+  late TextEditingController qtyTextController = TextEditingController();
+  late TextEditingController unitTextController = TextEditingController();
   late TextEditingController descriptionTextController =
-  TextEditingController();
+      TextEditingController();
 
   // late RestorableTextEditingController itemTextController =
   //     RestorableTextEditingController();
@@ -51,11 +46,12 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
   //     RestorableTextEditingController();
 
   final imageMaxLimit = 3;
-  List<XFile>? _imageFileList;
+  List<XFile>? _imageFileList = [];
 
-  set _imageFile(XFile? value) {
-    _imageFileList = value == null ? null : <XFile>[value];
-  }
+  // set _imageFile(XFile? value) {
+  //   _imageFileList = value == null ? null : <XFile>[value];
+  // }
+
   final _picker = ImagePicker();
   bool uploading = false;
 
@@ -64,6 +60,21 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
     super.initState();
     if (widget.isEdit) {
       detailVisible = true;
+      widget.quotationItem?.itemName != null
+          ? itemTextController.text = widget.quotationItem!.itemName!
+          : itemTextController.text = "";
+      widget.quotationItem?.quantity != null
+          ? qtyTextController.text = widget.quotationItem!.quantity!.toString()
+          : qtyTextController.text = "";
+      widget.quotationItem?.unit != null
+          ? unitTextController.text = widget.quotationItem!.unit!
+          : unitTextController.text = "";
+      widget.quotationItem?.description != null
+          ? descriptionTextController.text = widget.quotationItem!.description!
+          : descriptionTextController.text = "";
+      widget.quotationItem?.imageFileList != null
+          ? _imageFileList = widget.quotationItem?.imageFileList!
+          : _imageFileList = [];
     } else {
       detailVisible = false;
     }
@@ -79,21 +90,39 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
   }
 
   void didChangeDependencies() {
-    widget.quotationItem?.itemName != null
-        ? itemTextController.text = widget.quotationItem!.itemName!
-        : itemTextController.text = "";
-    widget.quotationItem?.quantity != null
-        ? qtyTextController.text = widget.quotationItem!.quantity!.toString()
-        : qtyTextController.text = "";
-    widget.quotationItem?.unit != null
-        ? unitTextController.text = widget.quotationItem!.unit!
-        : unitTextController.text = "";
-    widget.quotationItem?.description != null
-        ? descriptionTextController.text = widget.quotationItem!.description!
-        : descriptionTextController.text = "";
-    widget.quotationItem?.imageFileList != null
-        ? _imageFileList = widget.quotationItem?.imageFileList!
-        : _imageFileList = [];
+    // if (widget.isEdit){
+    //   widget.quotationItem?.itemName != null
+    //       ? itemTextController.text = widget.quotationItem!.itemName!
+    //       : itemTextController.text = "";
+    //   widget.quotationItem?.quantity != null
+    //       ? qtyTextController.text = widget.quotationItem!.quantity!.toString()
+    //       : qtyTextController.text = "";
+    //   widget.quotationItem?.unit != null
+    //       ? unitTextController.text = widget.quotationItem!.unit!
+    //       : unitTextController.text = "";
+    //   widget.quotationItem?.description != null
+    //       ? descriptionTextController.text = widget.quotationItem!.description!
+    //       : descriptionTextController.text = "";
+    //   widget.quotationItem?.imageFileList != null
+    //       ? _imageFileList = widget.quotationItem?.imageFileList!
+    //       : _imageFileList = [];
+    // }
+    // widget.quotationItem?.itemName != null
+    //     ? itemTextController.text = widget.quotationItem!.itemName!
+    //     : itemTextController.text = "";
+    // widget.quotationItem?.quantity != null
+    //     ? qtyTextController.text = widget.quotationItem!.quantity!.toString()
+    //     : qtyTextController.text = "";
+    // widget.quotationItem?.unit != null
+    //     ? unitTextController.text = widget.quotationItem!.unit!
+    //     : unitTextController.text = "";
+    // widget.quotationItem?.description != null
+    //     ? descriptionTextController.text = widget.quotationItem!.description!
+    //     : descriptionTextController.text = "";
+    // widget.quotationItem?.imageFileList != null
+    //     ? _imageFileList = widget.quotationItem?.imageFileList!
+    //     : _imageFileList = [];
+
     // widget.quotationItem?.itemName != null
     //     ? itemTextController.value.text = widget.quotationItem!.itemName!
     //     : itemTextController.value.text = "";
@@ -233,7 +262,8 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                                   99999999999) {
                                 return 'You have reached maximum number';
                               }
-                              if (int.parse(qtyTextController.value.text) <= 0) {
+                              if (int.parse(qtyTextController.value.text) <=
+                                  0) {
                                 return 'Quantity must be larger than zero';
                               }
                               return null;
@@ -288,10 +318,10 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                 Visibility(
                   visible: detailVisible,
                   child: SizedBox(
-                    height: 200,
+                    height: 160,
                     child: TextFormField(
                       keyboardType: TextInputType.multiline,
-                      maxLines: 7,
+                      maxLines: 5,
                       // controller: descriptionTextController.value,
                       controller: descriptionTextController,
                       decoration: formInputDecoration.copyWith(
@@ -427,8 +457,10 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                               widget.quotationItemIndex,
                               QuotationItem(
                                 itemName: itemTextController.value.text,
-                                quantity: int.parse(qtyTextController.value.text),
-                                description: descriptionTextController.value.text,
+                                quantity:
+                                    int.parse(qtyTextController.value.text),
+                                description:
+                                    descriptionTextController.value.text,
                                 unit: unitTextController.value.text,
                                 imageFileList: _imageFileList,
                               ),
@@ -522,6 +554,9 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
       print(response.file);
     }
   }
+
+
+
 
   // @override
   // String? get restorationId => widget.restorationId;

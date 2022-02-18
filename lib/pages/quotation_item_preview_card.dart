@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:animations/animations.dart';
 import '../global/device_size.dart';
+import '../global/styling.dart';
 import '../models/quotation_item.dart';
 // import 'package:easyquote/src/adaptive.dart';
 import 'quotation_edit_page.dart';
@@ -37,7 +38,6 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
     return OpenContainer(
       openBuilder: (context, closedContainer) {
         return QuotationEditPage(
-          restorationId: 'quotationEdit',
           callback: callback,
           quotationItem: widget.quotationItem,
           quotationItemIndex: widget.index,
@@ -46,7 +46,7 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
       },
       openColor: theme.cardColor,
       closedShape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       closedElevation: 0,
       closedColor: theme.cardColor,
@@ -58,7 +58,6 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
           onTap: openContainer,
           onDelete: widget.onDelete,
         );
-
         if (isDesktop) {
           return quotationItemPreview;
         } else {
@@ -176,34 +175,37 @@ class _QuotationItemPreview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            Expanded(
+                              child: Text(
+                                  quotationItem.itemName!,
+                                  style: EasyQuoteTextStyles.h5,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,),
+                            ),
                             Row(
                               children: [
                                 Text(
                                   quotationItem.quantity.toString(),
-                                  style: textTheme.caption,
+                                  style: EasyQuoteTextStyles.h6,
                                 ),
-                                const SizedBox(width: 4),
+                                SizedBox(width: 2),
                                 if (quotationItem.unit.toString() ==
                                     'null') ...[
                                   Text(
                                     "",
-                                    style: textTheme.caption,
+                                    style: EasyQuoteTextStyles.h6,
                                   )
                                 ] else ...[
                                   Text(
                                     quotationItem.unit.toString(),
-                                    style: textTheme.caption,
+                                    style: EasyQuoteTextStyles.h6,
                                   ),
                                 ]
                               ],
                             ),
-                            const SizedBox(height: 4),
-                            Text(quotationItem.itemName!,
-                                style: textTheme.headline5),
                           ],
                         ),
                       ),

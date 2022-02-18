@@ -28,38 +28,6 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
     super.initState();
   }
 
-  // void didChangeDependencies() {
-  //   final appState = Provider.of<ApplicationState>(context);
-  //   appState.quotationOrder.quotationRequester != null
-  //       ? quotationRequesterTextController.text = appState.quotationOrder.quotationRequester!
-  //       : quotationRequesterTextController.text = '';
-  // }
-
-  // addQuotationItem(newValue) {
-  //   setState(() {
-  //     _quotationOrder.quotationItems!.add(newValue);
-  //   });
-  // }
-  //
-  // updateQuotationItem(int index, QuotationItem newValue, bool deleteThis) {
-  //   if (deleteThis == true) {
-  //     setState(() {
-  //       _quotationOrder.quotationItems!.removeAt(index);
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _quotationOrder.quotationItems![index] = newValue;
-  //     });
-  //   }
-  // }
-  //
-  // deleteQuotationItem(index) {
-  //   print("Delete at ${index}");
-  //   setState(() {
-  //     _quotationOrder.quotationItems!.removeAt(index);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -68,18 +36,18 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
     final isDesktop = MediaQuery.of(context).size.width > FormFactor.tablet;
     final isTablet = MediaQuery.of(context).size.width > FormFactor.handset;
     final startPadding = isTablet
-        ? 60.0
+        ? 0.0
         : isDesktop
             ? 120.0
             : 0.0;
     final endPadding = isTablet
-        ? 30.0
+        ? 0.0
         : isDesktop
             ? 60.0
             : 0.0;
 
     return Consumer<ApplicationState>(
-      builder: (context, appState, _)=> Scaffold(
+      builder: (context, appState, _) => Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
           iconTheme: const IconThemeData(color: textColor),
@@ -107,8 +75,6 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                             ),
                           ),
                         );
-                        // print(
-                        //     'Button NEXT ... ${_quotationOrder.toJson()}');
                       }
                     },
                     child: Icon(
@@ -125,7 +91,7 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -140,7 +106,7 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                     //   ),
                     // ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                       child: TextFormField(
                         onChanged: (value) async {
                           appState.updateQuotationRequester(value);
@@ -166,14 +132,13 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                         style: textTheme.subtitle1,
                       ),
                     ),
-                    Expanded(
-                      child: appState.quotationOrder.quotationItems!.isEmpty
-                          ? Center(
-                              child: Column(
+                    appState.quotationOrder.quotationItems!.isEmpty
+                        ? Expanded(
+                            child: ListView(
                               children: [
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 100, 0, 40),
+                                      0, 50, 0, 40),
                                   child: SizedBox(
                                       height: 247,
                                       child: DecoratedBox(
@@ -186,32 +151,54 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                                         child: Center(child: null),
                                       )),
                                 ),
-                                Text(localizations.quotaOrderEmpty,
-                                    style: textTheme.subtitle1),
+                                Center(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 0, 100),
+                                    child: Text(localizations.quotaOrderEmpty,
+                                        style: textTheme.subtitle1),
+                                  ),
+                                ),
                               ],
-                            ))
-                          : ListView.separated(
-                              itemCount: appState.quotationOrder.quotationItems!.length,
+                            ),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.12),
+                                      blurRadius: 14.0,
+                                      offset: Offset(0, 4))
+                                ],
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              itemCount: appState
+                                  .quotationOrder.quotationItems!.length,
                               padding: EdgeInsetsDirectional.only(
                                 start: startPadding,
                                 end: endPadding,
                                 top: isDesktop ? 28 : 0,
-                                bottom: kToolbarHeight,
+                                bottom: 0,
                               ),
                               primary: false,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 8),
+                              separatorBuilder: (context, index) => Divider(
+                                color: listDivider,
+                              ),
                               itemBuilder: (context, index) =>
                                   QuotationItemPreviewCard(
                                 callback: appState.updateQuotationItem,
-                                quotationItem:
-                                appState.quotationOrder.quotationItems![index],
-                                onDelete: () => appState.deleteQuotationItem(index),
+                                quotationItem: appState
+                                    .quotationOrder.quotationItems![index],
+                                onDelete: () =>
+                                    appState.deleteQuotationItem(index),
                                 index: index,
                               ),
                             ),
-                    ),
-
+                          ),
                     //////////////////////////////////
                     //////////////////////////////////
                     // Visibility(
@@ -281,7 +268,6 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                 Navigator.of(context).push(MaterialPageRoute<void>(
                     builder: (BuildContext context) {
                       return QuotationEditPage(
-                        restorationId: 'quotationEdit',
                         callback: appState.addQuotationItem,
                         isEdit: false,
                       );
