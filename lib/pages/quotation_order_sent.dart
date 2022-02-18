@@ -44,10 +44,13 @@ class QuotationOrderSent extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                      const QuotationOrderListPage()));
+                  /////////////////////
+                  // MUST EDIT THIS
+
+                  // Navigator.of(context).pop();
+                  // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  //     builder: (BuildContext context) =>
+                  //         QuotationOrderListPage(quotationTitle: '',)));
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

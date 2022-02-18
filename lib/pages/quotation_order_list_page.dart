@@ -2,16 +2,18 @@ import 'package:provider/provider.dart';
 
 import '../application_state.dart';
 import '../global/device_size.dart';
+import '../widgets/ok_cancel_textfield_dialog.dart';
 import 'quotation_order_comfirm_page.dart';
 import 'quotation_edit_page.dart';
 import 'quotation_item_preview_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../models/quotation_order.dart';
 import '../global/styling.dart';
 
 class QuotationOrderListPage extends StatefulWidget {
-  const QuotationOrderListPage({Key? key}) : super(key: key);
+  QuotationOrderListPage({Key? key, required this.quotationTitle})
+      : super(key: key);
+  String quotationTitle;
 
   @override
   _QuotationOrderListPageState createState() => _QuotationOrderListPageState();
@@ -19,7 +21,6 @@ class QuotationOrderListPage extends StatefulWidget {
 
 class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
   final _formKey = GlobalKey<FormState>();
-  // late QuotationOrder _quotationOrder;
   late TextEditingController quotationRequesterTextController =
       TextEditingController();
 
@@ -28,10 +29,15 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
     super.initState();
   }
 
+  void updateQuotationTitle(String value) {
+    setState(() {
+      widget.quotationTitle = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    // final appState = Provider.of<ApplicationState>(context);
     final localizations = AppLocalizations.of(context)!;
     final isDesktop = MediaQuery.of(context).size.width > FormFactor.tablet;
     final isTablet = MediaQuery.of(context).size.width > FormFactor.handset;
@@ -91,45 +97,49 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+            padding: const EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
             child: Form(
               key: _formKey,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                    //   child: Text(
-                    //     localizations.quoteOrderPurpose,
-                    //     style: textTheme.subtitle1,
-                    //   ),
-                    // ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                      child: TextFormField(
-                        onChanged: (value) async {
-                          appState.updateQuotationRequester(value);
-                        },
-                        controller: quotationRequesterTextController,
-                        autofocus: true,
-                        decoration: formInputDecoration.copyWith(
-                            hintText: localizations.quoteOrderPurposeHint),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return localizations.quoteOrderPurposeV;
-                          }
-                          return null;
-                        },
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                      child: Row(
+                        children: [
+                          Text(
+                            widget.quotationTitle,
+                            style: EasyQuoteTextStyles.h5,
+                          ),
+                          IconButton(
+                              onPressed: () async {
+                                String message = "報價單名稱";
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => OkCancelTextFieldDialog(
+                                          callback: updateQuotationTitle,
+                                          quotationItem: widget.quotationTitle,
+                                          message: message,
+                                          isEdit: true,
+                                        ));
+                              },
+                              icon: Icon(
+                                Icons.edit,
+                                color: inactiveBackgroundColor,
+                              ))
+                        ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                      child: Text(
-                        appState.quotationOrder.quotationItems!.isNotEmpty
-                            ? '${localizations.quotaOrderItemText} (${appState.quotationOrder.quotationItems!.length})'
-                            : localizations.quotaOrderItemText,
-                        style: textTheme.subtitle1,
+                      child: Center(
+                        child: Text(
+                          appState.quotationOrder.quotationItems!.isNotEmpty
+                              ? '${localizations.quotaOrderItemText} (${appState.quotationOrder.quotationItems!.length})'
+                              : localizations.quotaOrderItemText,
+                          style: textTheme.subtitle1,
+                        ),
                       ),
                     ),
                     appState.quotationOrder.quotationItems!.isEmpty
@@ -199,58 +209,6 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                               ),
                             ),
                           ),
-                    //////////////////////////////////
-                    //////////////////////////////////
-                    // Visibility(
-                    //   visible: _quotationOrder.quotationItems!.isNotEmpty,
-                    //   child: Padding(
-                    //     padding:
-                    //         const EdgeInsetsDirectional.fromSTEB(80, 5, 80, 16),
-                    //     child: ElevatedButton(
-                    //       child: const SizedBox(
-                    //         height: 56,
-                    //         width: double.infinity,
-                    //         child: Center(
-                    //           child: Text(
-                    //             'Next',
-                    //             style:
-                    //                 TextStyle(fontSize: 20, color: Colors.white),
-                    //             textAlign: TextAlign.center,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       style: ElevatedButton.styleFrom(
-                    //         shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(20.0),
-                    //         ),
-                    //         primary: buttonColor,
-                    //         elevation: 0,
-                    //         shadowColor: Colors.transparent,
-                    //       ),
-                    //       onPressed: () {
-                    //         if (_formKey.currentState!.validate()) {
-                    //           _quotationOrder.quotationRequester =
-                    //               quotationRequesterTextController.text;
-                    //           _quotationOrder.submissionDate = DateTime.now();
-                    //           Navigator.push(
-                    //             context,
-                    //             MaterialPageRoute(
-                    //               builder: (context) => QuotationOrderConfirmPage(
-                    //                 quotationOrder: _quotationOrder,
-                    //                 history: false,
-                    //               ),
-                    //             ),
-                    //           );
-                    //           // print(
-                    //           //     'Button NEXT ... ${_quotationOrder.toJson()}');
-                    //         }
-                    //         // Navigator.pop(context);
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
-                    //////////////////////////////////
-                    //////////////////////////////////
                   ]),
             ),
           ),

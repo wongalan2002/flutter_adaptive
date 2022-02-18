@@ -450,8 +450,8 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                       shadowColor: Colors.transparent,
                     ),
                     onPressed: () {
-                      if (widget.isEdit == true) {
-                        if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate()) {
+                        if (widget.isEdit == true) {
                           Navigator.pop(context);
                           widget.callback!(
                               widget.quotationItemIndex,
@@ -465,9 +465,7 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                                 imageFileList: _imageFileList,
                               ),
                               false);
-                        }
-                      } else {
-                        if (_formKey.currentState!.validate()) {
+                        } else {
                           Navigator.of(context).pop();
                           widget.callback!(QuotationItem(
                               itemName: itemTextController.value.text,
@@ -554,18 +552,4 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
       print(response.file);
     }
   }
-
-
-
-
-  // @override
-  // String? get restorationId => widget.restorationId;
-  //
-  // @override
-  // void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-  //   registerForRestoration(itemTextController, 'item');
-  //   registerForRestoration(qtyTextController, 'qty');
-  //   registerForRestoration(unitTextController, 'unit');
-  //   registerForRestoration(descriptionTextController, 'description');
-  // }
 }

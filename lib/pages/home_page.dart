@@ -120,7 +120,7 @@ class _PageStack extends StatelessWidget {
     if (index == 2) page = SettingPage();
     // if (index == 2) page = AdaptiveReflowPage();
     // if (index == 3) page = FocusExamplesPage();
-    if (index == 3) page = QuotationOrderListPage();
+    // if (index == 3) page = QuotationOrderListPage();
     if (index == 4) page = QuotationEditPage(isEdit: false);
     return FocusTraversalGroup(child: page ?? Container());
   }

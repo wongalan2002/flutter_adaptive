@@ -54,7 +54,8 @@ class SettingPage extends StatelessWidget {
               children: [
                 Container(
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                       child: Text(
                         localizations.settingTitleLanguage,
                         style: EasyQuoteTextStyles.subtitle,
@@ -63,20 +64,20 @@ class SettingPage extends StatelessWidget {
                     decoration: const BoxDecoration(
                       border: Border(
                           bottom:
-                          BorderSide(width: 1, color: mainSessionButton)),
+                              BorderSide(width: 1, color: mainSessionButton)),
                     )),
                 InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                          const SettingProfileEditPage()),
+                          builder: (context) => const SettingProfileEditPage()),
                     );
                   },
                   child: Container(
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                         child: Text(
                           localizations.settingTitlePersonalInfo,
                           style: EasyQuoteTextStyles.subtitle,
@@ -85,15 +86,15 @@ class SettingPage extends StatelessWidget {
                       decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                            BorderSide(width: 1, color: mainSessionButton)),
+                                BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
                 InkWell(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Container(
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                         child: Text(
                           localizations.settingTitleFAQ,
                           style: EasyQuoteTextStyles.subtitle,
@@ -102,15 +103,15 @@ class SettingPage extends StatelessWidget {
                       decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                            BorderSide(width: 1, color: mainSessionButton)),
+                                BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
                 InkWell(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Container(
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                         child: Text(
                           localizations.settingTitleTerms,
                           style: EasyQuoteTextStyles.subtitle,
@@ -119,15 +120,15 @@ class SettingPage extends StatelessWidget {
                       decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                            BorderSide(width: 1, color: mainSessionButton)),
+                                BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
                 InkWell(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Container(
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                         child: Text(
                           localizations.settingTitleAboutUs,
                           style: EasyQuoteTextStyles.subtitle,
@@ -136,7 +137,7 @@ class SettingPage extends StatelessWidget {
                       decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                            BorderSide(width: 1, color: mainSessionButton)),
+                                BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
                 InkWell(
@@ -145,7 +146,8 @@ class SettingPage extends StatelessWidget {
                   },
                   child: Container(
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                         child: Text(
                           localizations.settingTitleLogout,
                           style: EasyQuoteTextStyles.subtitle,
@@ -154,7 +156,7 @@ class SettingPage extends StatelessWidget {
                       decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                            BorderSide(width: 1, color: mainSessionButton)),
+                                BorderSide(width: 1, color: mainSessionButton)),
                       )),
                 ),
               ],
