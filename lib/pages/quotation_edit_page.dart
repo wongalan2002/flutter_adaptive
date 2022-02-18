@@ -445,7 +445,7 @@ class _QuotationEditPageState extends State<QuotationEditPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      primary: buttonColor,
+                      primary: keyColor,
                       elevation: 0,
                       shadowColor: Colors.transparent,
                     ),

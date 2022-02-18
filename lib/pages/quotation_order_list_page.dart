@@ -108,9 +108,13 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                       child: Row(
                         children: [
-                          Text(
-                            widget.quotationTitle,
-                            style: EasyQuoteTextStyles.h5,
+                          Expanded(
+                            child: Text(
+                              widget.quotationTitle,
+                              style: EasyQuoteTextStyles.h5,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
                           ),
                           IconButton(
                               onPressed: () async {
@@ -196,7 +200,7 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                               ),
                               primary: false,
                               separatorBuilder: (context, index) => Divider(
-                                color: listDivider,
+                                color: dimGrey,
                               ),
                               itemBuilder: (context, index) =>
                                   QuotationItemPreviewCard(

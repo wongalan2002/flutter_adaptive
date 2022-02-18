@@ -15,7 +15,6 @@ class TextStyles {
   static TextStyle h2 = TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
 }
 
-const primaryColor = Color(0xFF255ED6);
 const textColor = Color(0xFF35364F);
 const backgroundColor = Color(0xFFF8F9FF);
 const redColor = Color(0xFFE85050);
@@ -23,14 +22,13 @@ const inactiveBackgroundColor = Color(0xFFCCCCCC);
 const activeBackgroundColor = Color(0xFF9C6DFF);
 const buttonColor = Colors.black;
 const mainSessionButton = Color(0xFFC4C4C4);
+const keyColor = Color(0xFF6732FF);
+const secKeyColor = Color(0xFF2B4FAA);
+const dimGrey = Color(0xFFB0B0B0);
+const lightGrey = Color (0xFFEEEEEE);
+const listDivider = Color (0xFFDBDBDB);
+
 const defaultPadding = 16.0;
-const keyColor = Color(0XFF6732FF);
-const CCC = Color(0XFFCCCCCC);
-const secKeyColor = Color(0XFF2B4FAA);
-const dimGrey = Color(0XFFB0B0B0);
-const lightGrey = Color (0XFFEEEEEE);
-const titleColor = Color (0XFF2B4FAA);
-const listDivider = Color (0XFFDBDBDB);
 
 InputDecoration formInputDecoration = InputDecoration(
   filled: true,

@@ -68,7 +68,7 @@ class SelectedPageButton extends StatelessWidget {
                       padding: const EdgeInsets.all(16.0),
                       child: SvgPicture.asset(
                         iconPath,
-                        color: isSelected ? keyColor : CCC,
+                        color: isSelected ? keyColor : inactiveBackgroundColor,
                       ),
                     ),
                   ),
