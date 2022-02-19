@@ -46,9 +46,9 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
       },
       openColor: theme.cardColor,
       closedShape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(0)),
       ),
-      closedElevation: 0,
+      closedElevation: 3,
       closedColor: theme.cardColor,
       closedBuilder: (context, openContainer) {
         final isDesktop = MediaQuery.of(context).size.width > FormFactor.tablet;
@@ -82,7 +82,7 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
               backgroundColor: colorScheme.primary,
               iconColor: Colors.red,
               alignment: Alignment.centerLeft,
-              padding: const EdgeInsetsDirectional.only(start: 20),
+              padding: const EdgeInsetsDirectional.only(start: 0),
             ),
             confirmDismiss: (direction) async {
               switch (direction) {
@@ -99,7 +99,7 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
               iconColor: Colors.red,
               backgroundColor: colorScheme.primary,
               alignment: Alignment.centerRight,
-              padding: const EdgeInsetsDirectional.only(end: 20),
+              padding: const EdgeInsetsDirectional.only(end: 0),
             ),
             child: quotationItemPreview,
           );

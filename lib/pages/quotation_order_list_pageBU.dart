@@ -177,41 +177,91 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                         ],
                       ),
                     )
-                        : Container(
-                      decoration: BoxDecoration(
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.12),
-                                blurRadius: 14.0,
-                                offset: Offset(0, 4))
-                          ],
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(20))),
+                        : Expanded(
                       child: ListView.separated(
-                        shrinkWrap: true,
                         itemCount: appState
-                            .quotationOrder.quotationItems!.length,
-                        padding: EdgeInsetsDirectional.only(
-                          start: startPadding,
-                          end: endPadding,
-                          top: isDesktop ? 28 : 0,
-                          bottom: 0,
-                        ),
-                        primary: false,
-                        separatorBuilder: (context, index) => Container(
-                            height: 900, width: double.infinity, color: dimGrey),
-                        itemBuilder: (context, index) =>
-                            QuotationItemPreviewCard(
-                              callback: appState.updateQuotationItem,
-                              quotationItem: appState
-                                  .quotationOrder.quotationItems![index],
-                              onDelete: () =>
-                                  appState.deleteQuotationItem(index),
-                              index: index,
-                            ),
+                            .quotationOrder.quotationItems!.length +
+                            2,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index < 1) {
+                            return Container(
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      // color: Colors.black.withOpacity(0.12),
+                                      blurRadius: 3.0,
+                                      offset: Offset(0, 3))
+                                ],
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20.0),
+                                    bottomRight: Radius.circular(0.0),
+                                    topLeft: Radius.circular(20.0),
+                                    bottomLeft: Radius.circular(0.0)),
+                              ),
+                            );
+                          }
+                          if (index == appState.quotationOrder.quotationItems!.length + 1) {
+                            return Container(
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.12),
+                                      blurRadius: 3.0,
+                                      offset: Offset(0, 3))
+                                ],
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(0.0),
+                                    bottomRight: Radius.circular(20.0),
+                                    topLeft: Radius.circular(0.0),
+                                    bottomLeft: Radius.circular(20.0)),
+                              ),
+                            );
+                          }
+                          index -= 1;
+                          return QuotationItemPreviewCard(
+                            callback: appState.updateQuotationItem,
+                            quotationItem: appState
+                                .quotationOrder.quotationItems![index],
+                            onDelete: () =>
+                                appState.deleteQuotationItem(index),
+                            index: index,
+                          );
+                        },   separatorBuilder: (context, index) => Container(
+                          height: index<1?0:2, width: double.infinity, color: lightGrey),
                       ),
-                    ),
+                    )
+                    // : Expanded(
+                    //   child: ListView.separated(
+                    //     shrinkWrap: true,
+                    //     itemCount: appState
+                    //         .quotationOrder.quotationItems!.length,
+                    //     padding: EdgeInsetsDirectional.only(
+                    //       start: startPadding,
+                    //       end: endPadding,
+                    //       top: isDesktop ? 28 : 0,
+                    //       bottom: 0,
+                    //     ),
+                    //     primary: false,
+                    //     separatorBuilder: (context, index) => Container(
+                    //         height: 400,
+                    //         width: double.infinity,
+                    //         color: dimGrey),
+                    //     itemBuilder: (context, index) =>
+                    //         QuotationItemPreviewCard(
+                    //       callback: appState.updateQuotationItem,
+                    //       quotationItem: appState
+                    //           .quotationOrder.quotationItems![index],
+                    //       onDelete: () =>
+                    //           appState.deleteQuotationItem(index),
+                    //       index: index,
+                    //     ),
+                    //   ),
+                    // ),
                   ]),
             ),
           ),
