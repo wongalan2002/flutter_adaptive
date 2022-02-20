@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 class QuotationItemPreviewCard extends StatefulWidget {
   QuotationItemPreviewCard(
       {Key? key,
-        required this.quotationItem,
-        required this.onDelete,
-        required this.index,
-        required this.callback})
+      required this.quotationItem,
+      required this.onDelete,
+      required this.index,
+      required this.callback})
       : super(key: key);
   QuotationItem quotationItem;
   Function onDelete;
@@ -46,9 +46,9 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
       },
       openColor: theme.cardColor,
       closedShape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(0)),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
-      closedElevation: 3,
+      closedElevation: 0,
       closedColor: theme.cardColor,
       closedBuilder: (context, openContainer) {
         final isDesktop = MediaQuery.of(context).size.width > FormFactor.tablet;
@@ -82,7 +82,7 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
               backgroundColor: colorScheme.primary,
               iconColor: Colors.red,
               alignment: Alignment.centerLeft,
-              padding: const EdgeInsetsDirectional.only(start: 0),
+              padding: const EdgeInsetsDirectional.only(start: 20),
             ),
             confirmDismiss: (direction) async {
               switch (direction) {
@@ -99,7 +99,7 @@ class _QuotationItemPreviewCardState extends State<QuotationItemPreviewCard> {
               iconColor: Colors.red,
               backgroundColor: colorScheme.primary,
               alignment: Alignment.centerRight,
-              padding: const EdgeInsetsDirectional.only(end: 0),
+              padding: const EdgeInsetsDirectional.only(end: 20),
             ),
             child: quotationItemPreview,
           );
@@ -180,10 +180,11 @@ class _QuotationItemPreview extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                  quotationItem.itemName!,
-                                  style: EasyQuoteTextStyles.h5,
+                                quotationItem.itemName!,
+                                style: EasyQuoteTextStyles.h5,
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 1,),
+                                maxLines: 1,
+                              ),
                             ),
                             Row(
                               children: [
@@ -267,23 +268,23 @@ class _PicturePreview extends StatelessWidget {
               alignment: const AlignmentDirectional(0, 0),
               child: kIsWeb
                   ? Container(
-                margin: const EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          quotationItem.imageFileList![index].path),
-                      fit: BoxFit.cover,
-                    )),
-              )
+                      margin: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                        image: NetworkImage(
+                            quotationItem.imageFileList![index].path),
+                        fit: BoxFit.cover,
+                      )),
+                    )
                   : Container(
-                margin: const EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: FileImage(
-                          File(quotationItem.imageFileList![index].path)),
-                      fit: BoxFit.cover,
-                    )),
-              ),
+                      margin: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                        image: FileImage(
+                            File(quotationItem.imageFileList![index].path)),
+                        fit: BoxFit.cover,
+                      )),
+                    ),
             ),
           );
         },

@@ -22,7 +22,7 @@ class QuotationOrderListPage extends StatefulWidget {
 class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController quotationRequesterTextController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   void initState() {
@@ -44,13 +44,13 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
     final startPadding = isTablet
         ? 0.0
         : isDesktop
-        ? 120.0
-        : 0.0;
+            ? 120.0
+            : 0.0;
     final endPadding = isTablet
         ? 0.0
         : isDesktop
-        ? 60.0
-        : 0.0;
+            ? 60.0
+            : 0.0;
 
     return Consumer<ApplicationState>(
       builder: (context, appState, _) => Scaffold(
@@ -122,11 +122,11 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                                 showDialog(
                                     context: context,
                                     builder: (_) => OkCancelTextFieldDialog(
-                                      callback: updateQuotationTitle,
-                                      quotationItem: widget.quotationTitle,
-                                      message: message,
-                                      isEdit: true,
-                                    ));
+                                          callback: updateQuotationTitle,
+                                          quotationItem: widget.quotationTitle,
+                                          message: message,
+                                          isEdit: true,
+                                        ));
                               },
                               icon: Icon(
                                 Icons.edit,
@@ -148,70 +148,74 @@ class _QuotationOrderListPageState extends State<QuotationOrderListPage> {
                     ),
                     appState.quotationOrder.quotationItems!.isEmpty
                         ? Expanded(
-                      child: ListView(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 50, 0, 40),
-                            child: SizedBox(
-                                height: 247,
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/icons/box.png"),
-                                        fit: BoxFit.fitHeight),
+                            child: ListView(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 50, 0, 40),
+                                  child: SizedBox(
+                                      height: 247,
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/icons/box.png"),
+                                              fit: BoxFit.fitHeight),
+                                        ),
+                                        child: Center(child: null),
+                                      )),
+                                ),
+                                Center(
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 0, 100),
+                                    child: Text(localizations.quotaOrderEmpty,
+                                        style: textTheme.subtitle1),
                                   ),
-                                  child: Center(child: null),
-                                )),
-                          ),
-                          Center(
-                            child: Padding(
-                              padding:
-                              const EdgeInsetsDirectional.fromSTEB(
-                                  0, 0, 0, 100),
-                              child: Text(localizations.quotaOrderEmpty,
-                                  style: textTheme.subtitle1),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                        : Container(
-                      decoration: BoxDecoration(
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.12),
-                                blurRadius: 14.0,
-                                offset: Offset(0, 4))
-                          ],
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(20))),
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: appState
-                            .quotationOrder.quotationItems!.length,
-                        padding: EdgeInsetsDirectional.only(
-                          start: startPadding,
-                          end: endPadding,
-                          top: isDesktop ? 28 : 0,
-                          bottom: 0,
+                          )
+                        : Expanded(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.12),
+                                        blurRadius: 14.0,
+                                        offset: Offset(0, 4))
+                                  ],
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: appState
+                                    .quotationOrder.quotationItems!.length,
+                                padding: EdgeInsetsDirectional.only(
+                                  start: startPadding,
+                                  end: endPadding,
+                                  top: isDesktop ? 28 : 0,
+                                  bottom: 0,
+                                ),
+                                primary: false,
+                                separatorBuilder: (context, index) => Container(
+                                    height: 1,
+                                    width: double.infinity,
+                                    color: lightGrey),
+                                itemBuilder: (context, index) =>
+                                    QuotationItemPreviewCard(
+                                  callback: appState.updateQuotationItem,
+                                  quotationItem: appState
+                                      .quotationOrder.quotationItems![index],
+                                  onDelete: () =>
+                                      appState.deleteQuotationItem(index),
+                                  index: index,
+                                ),
+                              ),
+                            ),
                         ),
-                        primary: false,
-                        separatorBuilder: (context, index) => Container(
-                            height: 900, width: double.infinity, color: dimGrey),
-                        itemBuilder: (context, index) =>
-                            QuotationItemPreviewCard(
-                              callback: appState.updateQuotationItem,
-                              quotationItem: appState
-                                  .quotationOrder.quotationItems![index],
-                              onDelete: () =>
-                                  appState.deleteQuotationItem(index),
-                              index: index,
-                            ),
-                      ),
-                    ),
                   ]),
             ),
           ),

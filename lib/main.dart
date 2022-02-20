@@ -8,7 +8,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'application_state.dart';
 import 'firebase_options.dart';
-import 'application_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,11 +21,11 @@ void main() async {
     ),
   );
 
-  // Required when using bits_dojo for custom TitleBars
-  doWhenWindowReady(() {
-    appWindow.title = "Easy Quote";
-    appWindow.show();
-  });
+  // // Required when using bits_dojo for custom TitleBars
+  // doWhenWindowReady(() {
+  //   appWindow.title = "Easy Quote";
+  //   appWindow.show();
+  // });
 }
 
 class EasyQuoteApp extends StatefulWidget {
