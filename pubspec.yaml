@@ -27,6 +27,7 @@ dependencies:
   animations: ^2.0.2
   firebase_storage: ^10.2.7
   change_app_package_name: ^1.0.0
+  adaptive_breakpoints: ^0.1.1
 
 dev_dependencies:
   flutter_test:

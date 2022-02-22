@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:adaptive_app_demos/global/device_type.dart';
+import 'package:adaptive_app_demos/pages/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,6 +32,11 @@ class ApplicationState with ChangeNotifier {
   QuotationOrder _quotationOrder =
   QuotationOrder(quotationItems: [], quotationRequester: '');
   QuotationOrder get quotationOrder => _quotationOrder;
+  set quotationOrder(QuotationOrder value) {
+    _quotationOrder = value;
+    print("I am setting QuotationOrder:${_quotationOrder}");
+    notifyListeners();
+  }
 
   List<QuotationOrder> _quotationOrders = [];
   List<QuotationOrder> get quotationOrders => _quotationOrders;
@@ -54,7 +60,6 @@ class ApplicationState with ChangeNotifier {
     // });
     userDoc.set(userProfile.toJson());
   }
-
   // Attending _attending = Attending.unknown;
   // Attending get attending => _attending;
 
@@ -77,8 +82,24 @@ class ApplicationState with ChangeNotifier {
   int get selectedMenuIndex => _selectedMenuIndex;
   set selectedMenuIndex(int value) {
     _selectedMenuIndex = value;
+    print("I am setting _selectedMenuIndex:${_selectedMenuIndex}");
     notifyListeners();
   }
+
+  MailboxPageType _selectedMailboxPage = MailboxPageType.inbox;
+  MailboxPageType get selectedMailboxPage => _selectedMailboxPage;
+  set selectedMailboxPage(MailboxPageType mailboxPage) {
+    _selectedMailboxPage = mailboxPage;
+    notifyListeners();
+  }
+
+  bool _onSearchPage = false;
+  bool get onSearchPage => _onSearchPage;
+  set onSearchPage(bool value) {
+    _onSearchPage = value;
+    notifyListeners();
+  }
+
 
   // Touch mode, determines density of views
   late bool _touchMode = getDefaultTouchMode();

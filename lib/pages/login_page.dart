@@ -117,7 +117,6 @@ class _LoginFormState extends State<_LoginForm> {
                           );
                         }
                       },
-                      // onPressed: handleLoginPressed,
                       child: Container(
                         width: double.infinity,
                         alignment: Alignment.center,
