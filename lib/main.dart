@@ -128,6 +128,8 @@ import 'authentication.dart';
 import 'firebase_options.dart';
 import 'routes.dart' as routes;
 
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

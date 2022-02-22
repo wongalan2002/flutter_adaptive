@@ -13,6 +13,15 @@ import 'models/quotation_item.dart';
 import 'models/quotation_order.dart';
 import 'models/user_profile.dart';
 
+enum MailboxPageType {
+  inbox,
+  starred,
+  sent,
+  trash,
+  spam,
+  drafts,
+}
+
 ///////////////////////////////////////////////////////////
 class ApplicationState with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _quotationOrdersSubscription;

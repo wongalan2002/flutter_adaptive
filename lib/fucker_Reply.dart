@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
@@ -84,7 +86,6 @@ class _ReplyAppState extends State<ReplyApp> with RestorationMixin {
         locale: GalleryOptions.of(context).locale,
         initialRoute: ReplyApp.homeRoute,
         onGenerateRoute: (settings) {
-          print("settings: ${settings}");
           switch (settings.name) {
             case ReplyApp.homeRoute:
               return MaterialPageRoute<void>(
