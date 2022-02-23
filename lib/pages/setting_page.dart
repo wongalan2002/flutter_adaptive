@@ -25,8 +25,9 @@ class SettingPage extends StatelessWidget {
       bool? doLogout = await showDialog(
           context: context, builder: (_) => OkCancelDialog(message: message));
       if (doLogout ?? false) {
-        context.read<ApplicationState>().reset();
+
         context.read<ApplicationState>().signOut();
+        context.read<ApplicationState>().reset();
         // context.read<AppModel>().logout();
       }
     }

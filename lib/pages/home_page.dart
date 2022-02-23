@@ -1,16 +1,12 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:adaptive_app_demos/application_state.dart';
-import 'package:adaptive_app_demos/fucker_MainBU.dart';
-import 'package:adaptive_app_demos/pages/quotation_order_list_page.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import '../adaptive.dart';
-import 'bottom_drawer.dart';
 import 'mailbox_body.dart';
 
 final desktopMailNavKey = GlobalKey<NavigatorState>();
@@ -26,8 +22,74 @@ class HomePage extends StatefulWidget {
   HomePageState createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class _RestorableAppState extends RestorableListenable<ApplicationState> {
+  @override
+  ApplicationState createDefaultValue() {
+    return ApplicationState();
+  }
+
+  @override
+  ApplicationState fromPrimitives(Object? data) {
+    final appState = ApplicationState();
+    final appData = Map<String, dynamic>.from(data as Map);
+    // appState.selectedEmailId = appData['selectedEmailId'] as int;
+    // appState.onSearchPage = appData['onSearchPage'] as bool;
+
+    // The index of the MailboxPageType enum is restored.
+    final mailboxPageIndex = appData['selectedMailboxPage'] as int;
+    appState.selectedMailboxPage = MailboxPageType.values[mailboxPageIndex];
+
+    // final starredEmailIdsList = appData['starredEmailIds'] as List<dynamic>;
+    // appState.starredEmailIds = {
+    //   ...starredEmailIdsList.map<int>((dynamic id) => id as int),
+    // };
+    // final trashEmailIdsList = appData['trashEmailIds'] as List<dynamic>;
+    // appState.trashEmailIds = {
+    //   ...trashEmailIdsList.map<int>((dynamic id) => id as int),
+    // };
+    print("FROM appState.selectedMailboxPage:${appState.selectedMailboxPage}");
+    return appState;
+  }
+
+  @override
+  Object? toPrimitives() {
+    print(
+        "TO value.selectedMailboxPage.index:${value.selectedMailboxPage.index}");
+    return <String, dynamic>{
+      // 'selectedEmailId': value.selectedEmailId,
+      // The index of the MailboxPageType enum is stored, since the value
+      // has to be serializable.
+      'selectedMailboxPage': value.selectedMailboxPage.index,
+      'onSearchPage': value.onSearchPage,
+      // 'starredEmailIds': value.starredEmailIds.toList(),
+      // 'trashEmailIds': value.trashEmailIds.toList(),
+    };
+  }
+}
+
+class HomePageState extends State<HomePage> with RestorationMixin {
   UniqueKey _inboxKey = UniqueKey();
+
+  final RestorableInt _index = RestorableInt(0);
+  final _RestorableAppState _appState = _RestorableAppState();
+
+  @override
+  // The restoration bucket id for this page,
+  // let's give it the name of our page!
+  String get restorationId => 'home_page';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    // Register our property to be saved every time it changes,
+    // and to be restored every time our app is killed by the OS!
+    registerForRestoration(_appState, 'nav_bar_index');
+  }
+
+  @override
+  void dispose() {
+    _appState.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -38,7 +100,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final isDesktop = isDisplayDesktop(context);
     final isTablet = isDisplaySmallDesktop(context);
-    final localizations = AppLocalizations.of(context)!;
+    // final localizations = AppLocalizations.of(context)!;
 
     final _navigationDestinations = <_Destination>[
       _Destination(
@@ -57,15 +119,6 @@ class HomePageState extends State<HomePage> {
         icon: '$_iconAssetLocation/Setting.svg',
       ),
     ];
-
-    // final _folders = <String, String>{
-    //   'Receipts': _folderIconAssetLocation,
-    //   'Pine Elementary': _folderIconAssetLocation,
-    //   'Taxes': _folderIconAssetLocation,
-    //   'Vacation': _folderIconAssetLocation,
-    //   'Mortgage': _folderIconAssetLocation,
-    //   'Freelance': _folderIconAssetLocation,
-    // };
 
     if (isDesktop) {
       return _DesktopNav(
@@ -98,20 +151,17 @@ class HomePageState extends State<HomePage> {
     }
 
     appState.selectedMailboxPage = destination;
+    _appState.value.selectedMailboxPage = destination;
     if (isDesktop) {
       while (desktopMailNavKey.currentState!.canPop()) {
         desktopMailNavKey.currentState!.pop();
       }
     }
-    if (!isDesktop) {
-      mobileMailNavKey.currentState!.pop();
-    }
 
     // if (appState.onMailView) {
     //   if (!isDesktop) {
-    //     mobileMailNavKey.currentState.pop();
+    //     mobileMailNavKey.currentState!.pop();
     //   }
-    //
     //   appState.selectedEmailId = -1;
     // }
   }
@@ -399,12 +449,12 @@ class _MobileNavState extends State<_MobileNav> with TickerProviderStateMixin {
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
     final drawerSize = constraints.biggest;
-    final drawerTop = drawerSize.height;
+    // final drawerTop = drawerSize.height;
 
-    final drawerAnimation = RelativeRectTween(
-      begin: RelativeRect.fromLTRB(0.0, drawerTop, 0.0, 0.0),
-      end: const RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-    ).animate(_drawerCurve);
+    // final drawerAnimation = RelativeRectTween(
+    //   begin: RelativeRect.fromLTRB(0.0, drawerTop, 0.0, 0.0),
+    //   end: const RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+    // ).animate(_drawerCurve);
 
     return Stack(
       clipBehavior: Clip.none,
@@ -486,9 +536,10 @@ class _MobileNavState extends State<_MobileNav> with TickerProviderStateMixin {
               drawerController: _drawerController,
               dropArrowCurve: _dropArrowCurve,
               navigationDestinations: widget.destinations,
-              // selectedMailbox: model.selectedMailboxPage,
               selectedMailbox: model.selectedMailboxPage,
               toggleBottomDrawerVisibility: _toggleBottomDrawerVisibility,
+              onItemTapped: widget.onItemTapped,
+              destinations: widget.destinations,
             );
           },
         ),
@@ -843,8 +894,9 @@ class _AnimatedBottomAppBar extends StatelessWidget {
     required this.navigationDestinations,
     required this.selectedMailbox,
     required this.toggleBottomDrawerVisibility,
+    required this.onItemTapped,
+    required this.destinations,
   });
-
 
   final AnimationController bottomAppBarController;
   final Animation<double> bottomAppBarCurve;
@@ -854,10 +906,11 @@ class _AnimatedBottomAppBar extends StatelessWidget {
   final List<_Destination> navigationDestinations;
   final MailboxPageType selectedMailbox;
   final ui.VoidCallback toggleBottomDrawerVisibility;
+  final void Function(int, MailboxPageType) onItemTapped;
+  final List<_Destination> destinations;
 
   @override
   Widget build(BuildContext context) {
-
     var fadeOut = Tween<double>(begin: 1, end: -1).animate(
       drawerController.drive(CurveTween(curve: standardEasing)),
     );
@@ -869,102 +922,52 @@ class _AnimatedBottomAppBar extends StatelessWidget {
         bottomAppBarController.forward();
 
         return SizeTransition(
-          sizeFactor: bottomAppBarCurve,
-          axisAlignment: -1,
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(top: 2),
-            child: BottomAppBar(
-              // shape: const WaterfallNotchedRectangle(),
-              notchMargin: 6,
-              child: Container(
-                height: kToolbarHeight,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // InkWell(
-                    //   key: const ValueKey('navigation_button'),
-                    //   borderRadius: const BorderRadius.all(Radius.circular(16)),
-                    //   onTap: toggleBottomDrawerVisibility,
-                    //   child: Row(
-                    //     children: [
-                    //       const SizedBox(width: 16),
-                    //       RotationTransition(
-                    //         turns: Tween(
-                    //           begin: 0.0,
-                    //           end: 1.0,
-                    //         ).animate(dropArrowCurve),
-                    //         child: const Icon(
-                    //           Icons.arrow_drop_up,
-                    //           // color: ReplyColors.white50,
-                    //         ),
-                    //       ),
-                    //       const SizedBox(width: 8),
-                    //       const _EasyQuoteLogo(),
-                    //       const SizedBox(width: 10),
-                    //       _FadeThroughTransitionSwitcher(
-                    //         fillColor: Colors.transparent,
-                    //         child: onMailView
-                    //             ? const SizedBox(width: 48)
-                    //             : FadeTransition(
-                    //                 opacity: fadeOut,
-                    //                 child: Text(
-                    //                   navigationDestinations
-                    //                       .firstWhere((destination) {
-                    //                     return destination.type ==
-                    //                         selectedMailbox;
-                    //                   }).textLabel,
-                    //                   // style: Theme.of(context)
-                    //                   //     .textTheme
-                    //                   //     .bodyText1
-                    //                   //     .copyWith(color: ReplyColors.white50),
-                    //                 ),
-                    //               ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    Expanded(
-                      child: Container(
-                          child: Row(
-                            children:
-                            navigationDestinations
-                    .map((btn) => Expanded(child: Text(btn.textLabel)))
-                    .toList()
-                              // Expanded(child: Text(
-                              //   navigationDestinations
-                              //       .firstWhere((destination) {
-                              //     return destination.type ==
-                              //         selectedMailbox;
-                              //   }).textLabel,
-                              // ),),
-                              // Expanded(child: Text(
-                              //   navigationDestinations
-                              //       .firstWhere((destination) {
-                              //     return destination.type ==
-                              //         selectedMailbox;
-                              //   }).textLabel,
-                              // ),),
-                              // Expanded(child: Text(
-                              //   navigationDestinations
-                              //       .firstWhere((destination) {
-                              //     return destination.type ==
-                              //         selectedMailbox;
-                              //   }).textLabel,
-                              // ),),
-
-                          )
-                          // child: _BottomAppBarActionItems(
-                          //   drawerVisible: bottomDrawerVisible,
-                          // ),
+            sizeFactor: bottomAppBarCurve,
+            axisAlignment: -1,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(top: 2),
+              child: BottomAppBar(
+                // shape: const WaterfallNotchedRectangle(),
+                notchMargin: 6,
+                child: Container(
+                  height: kToolbarHeight,
+                  child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Row(
+                                children: navigationDestinations
+                                    .asMap()
+                                    .map((index, element) => MapEntry(
+                                        index,
+                                        Expanded(
+                                          child: InkWell(
+                                              onTap: () {
+                                                onItemTapped(index,
+                                                    destinations[index].type);
+                                              },
+                                              child: Text(
+                                                  "$index ${element.textLabel}")),
+                                        )))
+                                    .values
+                                    .toList()
+                                // children: navigationDestinations
+                                //     .map((btn) => Expanded(
+                                //         child:
+                                //             InkWell(
+                                //               onTap: () {onItemTapped(index, destination.type)},
+                                //                 child: Text(btn.textLabel)
+                                //             )))
+                                //     .toList())
+                                ),
                           ),
-                    ),
-                  ],
+                        ),
+                      ]),
                 ),
               ),
-            ),
-          ),
-        );
+            ));
       },
     );
   }

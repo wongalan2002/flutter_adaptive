@@ -17,8 +17,9 @@ class StartPage extends StatelessWidget {
           centerTitle: false,
           elevation: 0,
           title: Text(
-            AppLocalizations.of(context)!.appName,
-            style: EasyQuoteTextStyles.h5.copyWith(color: secKeyColor),
+            "HAPPY"
+            // AppLocalizations.of(context)!.appName,
+            // style: EasyQuoteTextStyles.h5.copyWith(color: secKeyColor),
           ),
           actions: <Widget>[
             InkWell(

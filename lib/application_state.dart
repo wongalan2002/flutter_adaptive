@@ -391,6 +391,7 @@ class ApplicationState with ChangeNotifier {
   }
 
   void reset() {
+    selectedMailboxPage = MailboxPageType.inbox;
     selectedMenuIndex = 0;
     _touchMode = getDefaultTouchMode();
   }
