@@ -39,6 +39,7 @@ class HomePageState extends State<HomePage> {
     final isDesktop = isDisplayDesktop(context);
     final isTablet = isDisplaySmallDesktop(context);
     final localizations = AppLocalizations.of(context)!;
+
     final _navigationDestinations = <_Destination>[
       _Destination(
         type: MailboxPageType.inbox,
@@ -339,44 +340,44 @@ class _MobileNavState extends State<_MobileNav> with TickerProviderStateMixin {
     );
   }
 
-  double get _bottomDrawerHeight {
-    final renderBox =
-        _bottomDrawerKey.currentContext?.findRenderObject() as RenderBox;
-    return renderBox.size.height;
-  }
+  // double get _bottomDrawerHeight {
+  //   final renderBox =
+  //       _bottomDrawerKey.currentContext?.findRenderObject() as RenderBox;
+  //   return renderBox.size.height;
+  // }
 
-  void _handleDragUpdate(DragUpdateDetails details) {
-    _drawerController.value -= details.primaryDelta! / _bottomDrawerHeight;
-  }
-
-  void _handleDragEnd(DragEndDetails details) {
-    if (_drawerController.isAnimating ||
-        _drawerController.status == AnimationStatus.completed) {
-      return;
-    }
-
-    final flingVelocity =
-        details.velocity.pixelsPerSecond.dy / _bottomDrawerHeight;
-
-    if (flingVelocity < 0.0) {
-      _drawerController.fling(
-        velocity: math.max(_kFlingVelocity, -flingVelocity),
-      );
-    } else if (flingVelocity > 0.0) {
-      _dropArrowController.forward();
-      _drawerController.fling(
-        velocity: math.min(-_kFlingVelocity, -flingVelocity),
-      );
-    } else {
-      if (_drawerController.value < 0.6) {
-        _dropArrowController.forward();
-      }
-      _drawerController.fling(
-        velocity:
-            _drawerController.value < 0.6 ? -_kFlingVelocity : _kFlingVelocity,
-      );
-    }
-  }
+  // void _handleDragUpdate(DragUpdateDetails details) {
+  //   _drawerController.value -= details.primaryDelta! / _bottomDrawerHeight;
+  // }
+  //
+  // void _handleDragEnd(DragEndDetails details) {
+  //   if (_drawerController.isAnimating ||
+  //       _drawerController.status == AnimationStatus.completed) {
+  //     return;
+  //   }
+  //
+  //   final flingVelocity =
+  //       details.velocity.pixelsPerSecond.dy / _bottomDrawerHeight;
+  //
+  //   if (flingVelocity < 0.0) {
+  //     _drawerController.fling(
+  //       velocity: math.max(_kFlingVelocity, -flingVelocity),
+  //     );
+  //   } else if (flingVelocity > 0.0) {
+  //     _dropArrowController.forward();
+  //     _drawerController.fling(
+  //       velocity: math.min(-_kFlingVelocity, -flingVelocity),
+  //     );
+  //   } else {
+  //     if (_drawerController.value < 0.6) {
+  //       _dropArrowController.forward();
+  //     }
+  //     _drawerController.fling(
+  //       velocity:
+  //           _drawerController.value < 0.6 ? -_kFlingVelocity : _kFlingVelocity,
+  //     );
+  //   }
+  // }
 
   bool _handleScrollNotification(ScrollNotification notification) {
     if (notification.depth == 0) {
@@ -417,29 +418,29 @@ class _MobileNavState extends State<_MobileNav> with TickerProviderStateMixin {
             ),
           ),
         ),
-        MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            onTap: () {
-              _drawerController.reverse();
-              _dropArrowController.reverse();
-            },
-            child: Visibility(
-              maintainAnimation: true,
-              maintainState: true,
-              visible: _bottomDrawerVisible,
-              child: FadeTransition(
-                opacity: _drawerCurve,
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  color:
-                      Theme.of(context).bottomSheetTheme.modalBackgroundColor,
-                ),
-              ),
-            ),
-          ),
-        ),
+        // MouseRegion(
+        //   cursor: SystemMouseCursors.click,
+        //   child: GestureDetector(
+        //     onTap: () {
+        //       _drawerController.reverse();
+        //       _dropArrowController.reverse();
+        //     },
+        //     child: Visibility(
+        //       maintainAnimation: true,
+        //       maintainState: true,
+        //       visible: _bottomDrawerVisible,
+        //       child: FadeTransition(
+        //         opacity: _drawerCurve,
+        //         child: Container(
+        //           height: MediaQuery.of(context).size.height,
+        //           width: MediaQuery.of(context).size.width,
+        //           color:
+        //               Theme.of(context).bottomSheetTheme.modalBackgroundColor,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         // PositionedTransition(
         //   rect: drawerAnimation,
         //   child: Visibility(
@@ -623,139 +624,139 @@ class _NavigationRailHeader extends StatelessWidget {
   }
 }
 
-class _BottomDrawerFolderSection extends StatelessWidget {
-  const _BottomDrawerFolderSection({required this.folders})
-      : assert(folders != null);
+// class _BottomDrawerFolderSection extends StatelessWidget {
+//   const _BottomDrawerFolderSection({required this.folders})
+//       : assert(folders != null);
+//
+//   final Map<String, String> folders;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = Theme.of(context);
+//     final navigationRailTheme = theme.navigationRailTheme;
+//
+//     return Column(
+//       children: [
+//         for (var folder in folders.keys)
+//           InkWell(
+//             onTap: () {},
+//             child: ListTile(
+//               mouseCursor: SystemMouseCursors.click,
+//               // leading: ImageIcon(
+//               //   AssetImage(
+//               //     folders[folder],
+//               //     package: _assetsPackage,
+//               //   ),
+//               //   color: navigationRailTheme.unselectedLabelTextStyle.color,
+//               // ),
+//               title: Text(
+//                 folder,
+//                 // style: theme.textTheme.bodyText2.copyWith(
+//                 //   color: navigationRailTheme.unselectedLabelTextStyle.color,
+//                 // ),
+//               ),
+//             ),
+//           ),
+//       ],
+//     );
+//   }
+// }
 
-  final Map<String, String> folders;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final navigationRailTheme = theme.navigationRailTheme;
-
-    return Column(
-      children: [
-        for (var folder in folders.keys)
-          InkWell(
-            onTap: () {},
-            child: ListTile(
-              mouseCursor: SystemMouseCursors.click,
-              // leading: ImageIcon(
-              //   AssetImage(
-              //     folders[folder],
-              //     package: _assetsPackage,
-              //   ),
-              //   color: navigationRailTheme.unselectedLabelTextStyle.color,
-              // ),
-              title: Text(
-                folder,
-                // style: theme.textTheme.bodyText2.copyWith(
-                //   color: navigationRailTheme.unselectedLabelTextStyle.color,
-                // ),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _NavigationRailFolderSection extends StatelessWidget {
-  const _NavigationRailFolderSection({required this.folders})
-      : assert(folders != null);
-
-  final Map<String, String> folders;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final navigationRailTheme = theme.navigationRailTheme;
-    final animation = NavigationRail.extendedAnimation(context);
-
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (context, child) {
-        return Visibility(
-          maintainAnimation: true,
-          maintainState: true,
-          visible: animation.value > 0,
-          child: Opacity(
-            opacity: animation.value,
-            child: Align(
-              widthFactor: animation.value,
-              alignment: AlignmentDirectional.centerStart,
-              child: SizedBox(
-                height: 485,
-                width: 256,
-                child: ListView(
-                  padding: const EdgeInsets.all(12),
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    const Divider(
-                      color: Colors.red,
-                      thickness: 0.4,
-                      indent: 14,
-                      endIndent: 16,
-                    ),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: 16,
-                      ),
-                      child: Text(
-                        'FOLDERS',
-                        // style: textTheme.caption.copyWith(
-                        //   color: navigationRailTheme
-                        //       .unselectedLabelTextStyle.color,
-                        // ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    for (var folder in folders.keys)
-                      InkWell(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(36),
-                        ),
-                        onTap: () {},
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                const SizedBox(width: 12),
-                                // ImageIcon(
-                                //   AssetImage(
-                                //     folders[folder],
-                                //     package: _assetsPackage,
-                                //   ),
-                                //   color: navigationRailTheme
-                                //       .unselectedLabelTextStyle.color,
-                                // ),
-                                const SizedBox(width: 24),
-                                Text(
-                                  folder,
-                                  // style: textTheme.bodyText1.copyWith(
-                                  //   color: navigationRailTheme
-                                  //       .unselectedLabelTextStyle.color,
-                                  // ),
-                                ),
-                                const SizedBox(height: 72),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
+// class _NavigationRailFolderSection extends StatelessWidget {
+//   const _NavigationRailFolderSection({required this.folders})
+//       : assert(folders != null);
+//
+//   final Map<String, String> folders;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = Theme.of(context);
+//     final textTheme = theme.textTheme;
+//     final navigationRailTheme = theme.navigationRailTheme;
+//     final animation = NavigationRail.extendedAnimation(context);
+//
+//     return AnimatedBuilder(
+//       animation: animation,
+//       builder: (context, child) {
+//         return Visibility(
+//           maintainAnimation: true,
+//           maintainState: true,
+//           visible: animation.value > 0,
+//           child: Opacity(
+//             opacity: animation.value,
+//             child: Align(
+//               widthFactor: animation.value,
+//               alignment: AlignmentDirectional.centerStart,
+//               child: SizedBox(
+//                 height: 485,
+//                 width: 256,
+//                 child: ListView(
+//                   padding: const EdgeInsets.all(12),
+//                   physics: const NeverScrollableScrollPhysics(),
+//                   children: [
+//                     const Divider(
+//                       color: Colors.red,
+//                       thickness: 0.4,
+//                       indent: 14,
+//                       endIndent: 16,
+//                     ),
+//                     const SizedBox(height: 16),
+//                     Padding(
+//                       padding: const EdgeInsetsDirectional.only(
+//                         start: 16,
+//                       ),
+//                       child: Text(
+//                         'FOLDERS',
+//                         // style: textTheme.caption.copyWith(
+//                         //   color: navigationRailTheme
+//                         //       .unselectedLabelTextStyle.color,
+//                         // ),
+//                       ),
+//                     ),
+//                     const SizedBox(height: 8),
+//                     for (var folder in folders.keys)
+//                       InkWell(
+//                         borderRadius: const BorderRadius.all(
+//                           Radius.circular(36),
+//                         ),
+//                         onTap: () {},
+//                         child: Column(
+//                           children: [
+//                             Row(
+//                               children: [
+//                                 const SizedBox(width: 12),
+//                                 // ImageIcon(
+//                                 //   AssetImage(
+//                                 //     folders[folder],
+//                                 //     package: _assetsPackage,
+//                                 //   ),
+//                                 //   color: navigationRailTheme
+//                                 //       .unselectedLabelTextStyle.color,
+//                                 // ),
+//                                 const SizedBox(width: 24),
+//                                 Text(
+//                                   folder,
+//                                   // style: textTheme.bodyText1.copyWith(
+//                                   //   color: navigationRailTheme
+//                                   //       .unselectedLabelTextStyle.color,
+//                                   // ),
+//                                 ),
+//                                 const SizedBox(height: 72),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
 class _Destination {
   const _Destination({
@@ -844,6 +845,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
     required this.toggleBottomDrawerVisibility,
   });
 
+
   final AnimationController bottomAppBarController;
   final Animation<double> bottomAppBarCurve;
   final bool bottomDrawerVisible;
@@ -855,6 +857,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     var fadeOut = Tween<double>(begin: 1, end: -1).animate(
       drawerController.drive(CurveTween(curve: standardEasing)),
     );
@@ -874,58 +877,83 @@ class _AnimatedBottomAppBar extends StatelessWidget {
               // shape: const WaterfallNotchedRectangle(),
               notchMargin: 6,
               child: Container(
-                color: Colors.transparent,
                 height: kToolbarHeight,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      key: const ValueKey('navigation_button'),
-                      borderRadius: const BorderRadius.all(Radius.circular(16)),
-                      onTap: toggleBottomDrawerVisibility,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 16),
-                          RotationTransition(
-                            turns: Tween(
-                              begin: 0.0,
-                              end: 1.0,
-                            ).animate(dropArrowCurve),
-                            child: const Icon(
-                              Icons.arrow_drop_up,
-                              // color: ReplyColors.white50,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          const _EasyQuoteLogo(),
-                          const SizedBox(width: 10),
-                          _FadeThroughTransitionSwitcher(
-                            fillColor: Colors.transparent,
-                            child: onMailView
-                                ? const SizedBox(width: 48)
-                                : FadeTransition(
-                                    opacity: fadeOut,
-                                    child: Text(
-                                      navigationDestinations
-                                          .firstWhere((destination) {
-                                        return destination.type ==
-                                            selectedMailbox;
-                                      }).textLabel,
-                                      // style: Theme.of(context)
-                                      //     .textTheme
-                                      //     .bodyText1
-                                      //     .copyWith(color: ReplyColors.white50),
-                                    ),
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // InkWell(
+                    //   key: const ValueKey('navigation_button'),
+                    //   borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    //   onTap: toggleBottomDrawerVisibility,
+                    //   child: Row(
+                    //     children: [
+                    //       const SizedBox(width: 16),
+                    //       RotationTransition(
+                    //         turns: Tween(
+                    //           begin: 0.0,
+                    //           end: 1.0,
+                    //         ).animate(dropArrowCurve),
+                    //         child: const Icon(
+                    //           Icons.arrow_drop_up,
+                    //           // color: ReplyColors.white50,
+                    //         ),
+                    //       ),
+                    //       const SizedBox(width: 8),
+                    //       const _EasyQuoteLogo(),
+                    //       const SizedBox(width: 10),
+                    //       _FadeThroughTransitionSwitcher(
+                    //         fillColor: Colors.transparent,
+                    //         child: onMailView
+                    //             ? const SizedBox(width: 48)
+                    //             : FadeTransition(
+                    //                 opacity: fadeOut,
+                    //                 child: Text(
+                    //                   navigationDestinations
+                    //                       .firstWhere((destination) {
+                    //                     return destination.type ==
+                    //                         selectedMailbox;
+                    //                   }).textLabel,
+                    //                   // style: Theme.of(context)
+                    //                   //     .textTheme
+                    //                   //     .bodyText1
+                    //                   //     .copyWith(color: ReplyColors.white50),
+                    //                 ),
+                    //               ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Expanded(
                       child: Container(
-                          color: Colors.transparent,
-                          child: Text("_BottomAppBarActionItems")
+                          child: Row(
+                            children:
+                            navigationDestinations
+                    .map((btn) => Expanded(child: Text(btn.textLabel)))
+                    .toList()
+                              // Expanded(child: Text(
+                              //   navigationDestinations
+                              //       .firstWhere((destination) {
+                              //     return destination.type ==
+                              //         selectedMailbox;
+                              //   }).textLabel,
+                              // ),),
+                              // Expanded(child: Text(
+                              //   navigationDestinations
+                              //       .firstWhere((destination) {
+                              //     return destination.type ==
+                              //         selectedMailbox;
+                              //   }).textLabel,
+                              // ),),
+                              // Expanded(child: Text(
+                              //   navigationDestinations
+                              //       .firstWhere((destination) {
+                              //     return destination.type ==
+                              //         selectedMailbox;
+                              //   }).textLabel,
+                              // ),),
+
+                          )
                           // child: _BottomAppBarActionItems(
                           //   drawerVisible: bottomDrawerVisible,
                           // ),
@@ -942,72 +970,72 @@ class _AnimatedBottomAppBar extends StatelessWidget {
   }
 }
 
-class _BottomDrawerDestinations extends StatelessWidget {
-  const _BottomDrawerDestinations({
-    required this.destinations,
-    required this.drawerController,
-    required this.dropArrowController,
-    required this.selectedMailbox,
-    required this.onItemTapped,
-  })  : assert(destinations != null),
-        assert(drawerController != null),
-        assert(dropArrowController != null),
-        assert(selectedMailbox != null),
-        assert(onItemTapped != null);
-
-  final List<_Destination> destinations;
-  final AnimationController drawerController;
-  final AnimationController dropArrowController;
-  final MailboxPageType selectedMailbox;
-  final void Function(int, MailboxPageType) onItemTapped;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final destinationButtons = <Widget>[];
-
-    for (var index = 0; index < destinations.length; index += 1) {
-      var destination = destinations[index];
-      destinationButtons.add(
-        InkWell(
-          key: ValueKey('Reply-${destination.textLabel}'),
-          onTap: () {
-            drawerController.reverse();
-            dropArrowController.forward();
-            Future.delayed(
-              Duration(
-                milliseconds: 300,
-              ),
-              () {
-                // Wait until animations are complete to reload the state.
-                // Delay scales with the timeDilation value of the gallery.
-                onItemTapped(index, destination.type);
-              },
-            );
-          },
-          child: ListTile(
-              mouseCursor: SystemMouseCursors.click,
-              leading: Icon(Icons.reply),
-              iconColor: destination.type == selectedMailbox
-                  ? Colors.red
-                  : Colors.blue,
-              title: Text(destination.textLabel)),
-
-          // style: theme.textTheme.bodyText2.copyWith(
-          //   color: destination.type == selectedMailbox
-          //       ? theme.colorScheme.secondary
-          //       : theme.navigationRailTheme.unselectedLabelTextStyle.color,
-          // ),
-          // ),
-        ),
-      );
-    }
-
-    return Column(
-      children: destinationButtons,
-    );
-  }
-}
+// class _BottomDrawerDestinations extends StatelessWidget {
+//   const _BottomDrawerDestinations({
+//     required this.destinations,
+//     required this.drawerController,
+//     required this.dropArrowController,
+//     required this.selectedMailbox,
+//     required this.onItemTapped,
+//   })  : assert(destinations != null),
+//         assert(drawerController != null),
+//         assert(dropArrowController != null),
+//         assert(selectedMailbox != null),
+//         assert(onItemTapped != null);
+//
+//   final List<_Destination> destinations;
+//   final AnimationController drawerController;
+//   final AnimationController dropArrowController;
+//   final MailboxPageType selectedMailbox;
+//   final void Function(int, MailboxPageType) onItemTapped;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = Theme.of(context);
+//     final destinationButtons = <Widget>[];
+//
+//     for (var index = 0; index < destinations.length; index += 1) {
+//       var destination = destinations[index];
+//       destinationButtons.add(
+//         InkWell(
+//           key: ValueKey('Reply-${destination.textLabel}'),
+//           onTap: () {
+//             drawerController.reverse();
+//             dropArrowController.forward();
+//             Future.delayed(
+//               Duration(
+//                 milliseconds: 300,
+//               ),
+//               () {
+//                 // Wait until animations are complete to reload the state.
+//                 // Delay scales with the timeDilation value of the gallery.
+//                 onItemTapped(index, destination.type);
+//               },
+//             );
+//           },
+//           child: ListTile(
+//               mouseCursor: SystemMouseCursors.click,
+//               leading: Icon(Icons.reply),
+//               iconColor: destination.type == selectedMailbox
+//                   ? Colors.red
+//                   : Colors.blue,
+//               title: Text(destination.textLabel)),
+//
+//           // style: theme.textTheme.bodyText2.copyWith(
+//           //   color: destination.type == selectedMailbox
+//           //       ? theme.colorScheme.secondary
+//           //       : theme.navigationRailTheme.unselectedLabelTextStyle.color,
+//           // ),
+//           // ),
+//         ),
+//       );
+//     }
+//
+//     return Column(
+//       children: destinationButtons,
+//     );
+//   }
+// }
 
 class _MailNavigator extends StatefulWidget {
   const _MailNavigator({required this.child}) : assert(child != null);
